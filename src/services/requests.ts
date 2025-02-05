@@ -1,0 +1,51 @@
+import axios, { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+
+const apiClient = axios.create({
+  baseURL: 'https://api.example.com', // Replace with your API base URL
+  timeout: 30000, // Request timeout in milliseconds
+});
+
+apiClient.interceptors.request.use(
+  (config: InternalAxiosRequestConfig) => {
+    // Add any custom request headers or configurations here
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+apiClient.interceptors.response.use(
+  (response: AxiosResponse) => {
+    // Handle response data here
+    return response;
+  },
+  (error) => {
+    // Handle response errors here
+    return Promise.reject(error);
+  }
+);
+
+const call = async <T>(endpoint: string, config?: AxiosRequestConfig): Promise<T> => {
+  try {
+    const response = await apiClient.request<T>({
+      url: endpoint,
+      ...config,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const get = async <T>(endpoint: string, config?: AxiosRequestConfig): Promise<T> =>
+  call<T>(endpoint, { ...config, method: 'GET' });
+
+export const post = async <T>(endpoint: string, data?: any, config?: AxiosRequestConfig): Promise<T> =>
+  call<T>(endpoint, { ...config, method: 'POST', data });
+
+export const put = async <T>(endpoint: string, data?: any, config?: AxiosRequestConfig): Promise<T> =>
+  call<T>(endpoint, { ...config, method: 'PUT', data });
+
+export const remove = async <T>(endpoint: string, config?: AxiosRequestConfig): Promise<T> =>
+  call<T>(endpoint, { ...config, method: 'DELETE' });
