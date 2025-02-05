@@ -3,10 +3,10 @@ import Flow from 'body/flow/map';
 
 const Index = () => {
   return (
-    <div>
+    <>
       <Chart />
       <Flow />
-    </div>
+    </>
   );
 };
 
