@@ -1,88 +1,68 @@
-import { useEffect, useRef } from 'react';
-import {
-  select,
-  geoMercator,
-  geoPath,
-  zoom,
-} from 'd3';
-import { FeatureCollection } from 'geojson';
+"use client"
+import { useEffect } from 'react';
 
 const Index = () => {
-  const divRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
-    if (!divRef.current) return;
+    if (window.google) {
+      var map = new google.maps.Map(document.getElementById("map_div"), {
+        center: new google.maps.LatLng(33.808678, -117.918921),
+        zoom: 14,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+      /*
+       * create infowindow (which will be used by markers)
+       */
+      var infoWindow = new google.maps.InfoWindow();
 
-    const width = 440;
-    const height = 300;
+      /*
+       * marker creater function (acts as a closure for html parameter)
+       */
+      function createMarker(options, html) {
+        var marker = new google.maps.Marker(options);
+        if (html) {
+          infoWindow.setContent(html);
+          infoWindow.open(options.map, marker);
+          google.maps.event.addListener(marker, "click", function () {
+            infoWindow.setContent(html);
+            infoWindow.open(options.map, this);
+          });
 
-    // Clear existing content
-    select(divRef.current).selectAll("*").remove();
+        }
+        return marker;
+      }
 
+      /*
+       * add markers to map
+       */
+      var marker0 = createMarker({
+        position: new google.maps.LatLng(33.808678, -117.918921),
+        map: map,
+        icon: "http://1.bp.blogspot.com/_GZzKwf6g1o8/S6xwK6CSghI/AAAAAAAAA98/_iA3r4Ehclk/s1600/marker-green.png"
+      }, "<h1>Person 2</h1><p>This is first point for person 2</p>");
 
-    // Create SVG
-    const svg = select(divRef.current)
-      .append('svg')
-      .attr('width', '100%')
-      .attr('height', height);
-    const g = svg.append('g');
-    svg.call(zoom<SVGSVGElement, unknown>()
-      .on('zoom', (event) => g.attr('transform', event.transform)));
+      var marker1 = createMarker({
+        position: new google.maps.LatLng(33.818038, -117.928492),
+        map: map
+      }, "<h1>Person1</h1><p>This is first point for person 1</p>");
 
-    // Setup projection
-    const projection = geoMercator()
-      .scale(85)
-      .translate([width / 2, height / 2 * 1.3]);
+      var marker2 = createMarker({
+        position: new google.maps.LatLng(33.803333, -117.915278),
+        map: map
+      });
+      var marker3 = createMarker({
+        position: new google.maps.LatLng(33.808038, -117.928495),
+        map: map,
+        icon: "http://1.bp.blogspot.com/_GZzKwf6g1o8/S6xwK6CSghI/AAAAAAAAA98/_iA3r4Ehclk/s1600/marker-green.png"
+      });
+    }
 
-    const path = geoPath().projection(projection);
-
-    // Define links
-    const links = [
-      { type: "LineString", coordinates: [[100, 60], [-60, -30]] },
-      { type: "LineString", coordinates: [[10, -20], [-60, -30]] },
-      { type: "LineString", coordinates: [[10, -20], [130, -30]] }
-    ];
-
-    // Fetch and render map
-    fetch("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
-      .then(response => response.json())
-      .then((data: FeatureCollection) => {
-        // Draw map
-        svg.append("g")
-          .selectAll("path")
-          .data(data.features)
-          .enter()
-          .append("path")
-          .attr("fill", "#b8b8b8")
-          .attr("d", path)
-          .style("stroke", "#fff")
-          .style("stroke-width", 0.5);
-
-        // Draw links
-        svg.selectAll("path.link")
-          .data(links)
-          .enter()
-          .append("path")
-          .attr("class", "link")
-          .attr("d", path as any)
-          .style("fill", "none")
-          .style("stroke", "orange")
-          .style("stroke-width", 2);
-      })
-      .catch(error => console.error('Error loading map data:', error));
-
-  }, []);
+  }, [window]);
 
   return (
-    <svg
-      ref={divRef}
-      style={{
-        width: '100%',
-        height: '100%',
-        minWidth: '440px',
-        minHeight: '300px'
-      }}
-    />
+    <div>
+      <div id="map_div" style={{ height: 400 }}></div>
+    </div>
   );
 };
 
