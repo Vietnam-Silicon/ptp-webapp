@@ -1,7 +1,7 @@
 
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   ReactFlow,
   ReactFlowProvider,
@@ -11,6 +11,7 @@ import {
   useReactFlow,
   Edge,
   Node,
+  useOnSelectionChange,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
@@ -25,11 +26,22 @@ const LayoutFlow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance<Node, Edge>>();
+  const [selectedNode, setSelectedNode] = useState<Node>();;
   const { setViewport } = useReactFlow();
 
   const storeFlowDebounce = debounce((data) => {
     localStorage.setItem(flowStorageKey, JSON.stringify(data));
   }, 1000);
+
+  const onChange = useCallback(({ nodes } : {nodes: Node[]}) => {
+    setSelectedNode(nodes[0]);
+  }, []);
+ 
+  useOnSelectionChange({
+    onChange,
+  });
+
+  console.log(selectedNode)
 
   useEffect(() => {
     if (rfInstance) {

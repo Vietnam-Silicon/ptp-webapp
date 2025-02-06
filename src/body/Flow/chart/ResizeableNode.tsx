@@ -24,12 +24,9 @@ const ResizableNode: FC<ResizableNodeProps> = ({ data }) => {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-        <Image src="./delivery-truck.svg" width="40" height="40" alt='image' />
-        <Typography fontSize={12} style={{ textWrap: 'wrap' }}>
+        <Image src="./delivery-truck.svg" width="100" height="40" alt='image' />
+        <Typography fontSize={14} style={{ textWrap: 'wrap' }}>
           {data.label}
-        </Typography>
-        <Typography fontSize={10} style={{ textWrap: 'wrap' }}>
-          06/02/2025 - 16/02/2025
         </Typography>
       </Card>
 
