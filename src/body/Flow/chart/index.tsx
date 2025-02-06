@@ -1,7 +1,7 @@
 
 'use client'
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ReactFlow,
   ReactFlowProvider,
@@ -11,9 +11,9 @@ import {
   useReactFlow,
   Edge,
   Node,
-  useOnSelectionChange,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import { useTranslations } from 'next-intl';
 
 import { orderBy, debounce } from 'lodash-es';
 
@@ -21,27 +21,24 @@ import ResizableNode from './ResizeableNode';
 import Floating from './SimpleFloating';
 import { returnData, flowStorageKey } from './constants';
 import { parseFlowData, transform } from './utils';
+import { Popover, Typography } from '@mui/material';
 
 const LayoutFlow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance<Node, Edge>>();
-  const [selectedNode, setSelectedNode] = useState<Node>();;
+
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const t = useTranslations('HomePage');
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   const { setViewport } = useReactFlow();
 
   const storeFlowDebounce = debounce((data) => {
     localStorage.setItem(flowStorageKey, JSON.stringify(data));
   }, 1000);
-
-  const onChange = useCallback(({ nodes } : {nodes: Node[]}) => {
-    setSelectedNode(nodes[0]);
-  }, []);
- 
-  useOnSelectionChange({
-    onChange,
-  });
-
-  console.log(selectedNode)
 
   useEffect(() => {
     if (rfInstance) {
@@ -73,9 +70,15 @@ const LayoutFlow = () => {
 
   }, [setNodes, setEdges, setViewport]);
 
+
+  const onNodeClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
   return (
     <>
       <ReactFlow
+        onNodeClick={onNodeClick}
         selectionOnDrag={false}
         onInit={setRfInstance}
         proOptions={{ hideAttribution: true }}
@@ -86,6 +89,19 @@ const LayoutFlow = () => {
         nodeTypes={{ resizableNode: ResizableNode }}
         edgeTypes={{ floating: Floating }}
       />
+      <Popover
+        id="basic-popover"
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        disableScrollLock
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+      >
+        <Typography sx={{ p: 2 }}>{t('title')}</Typography>
+      </Popover>
     </>
   );
 };

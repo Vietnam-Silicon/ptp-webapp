@@ -8,22 +8,25 @@ import {
 
 interface ResizableNodeProps {
   data: { label: string, id: number, selected?: boolean };
+  selected?: boolean;
 }
 
 const ResizableNode: FC<ResizableNodeProps> = ({ data }) => {
   return (
     <>
-      <Card sx={{
-        whiteSpace: 'nowrap', border: '1px solid black',
-        borderRadius: '8px', padding: '8px', backgroundColor: data.selected ? '#d3d0d9' : 'white',
-        display: 'flex',
-        gap: '8px',
-        height: '80px',
-        width: '220px',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
+      <Card
+        sx={{
+          whiteSpace: 'nowrap', border: '1px solid black',
+          borderRadius: '8px', padding: '8px', backgroundColor: data.selected ? '#d3d0d9' : 'white',
+          display: 'flex',
+          gap: '8px',
+          height: '80px',
+          width: '220px',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <Image src="./delivery-truck.svg" width="100" height="40" alt='image' />
         <Typography fontSize={14} style={{ textWrap: 'wrap' }}>
           {data.label}

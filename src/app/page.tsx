@@ -1,9 +1,31 @@
+"use client"
+
 import Image from "next/image";
 import styles from "./page.module.css";
+import { useTranslations } from "next-intl";
+import { useCookies } from 'next-client-cookies';
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const cookies = useCookies();
+  const router = useRouter();
+
+  const t = useTranslations('HomePage');
+  const currentLocale = cookies.get('locale');
+
+  const onChange = (event: any) => {
+    cookies.set('locale', event.target.value);
+    router.refresh();
+  }
+
   return (
     <div className={styles.page}>
+
+      <select onChange={onChange} defaultValue={currentLocale}>
+        <option value="en">English</option>
+        <option value="th">Thailand</option>
+      </select>
+
       <main className={styles.main}>
         <Image
           className={styles.logo}
@@ -34,7 +56,8 @@ export default function Home() {
               width={20}
               height={20}
             />
-            Deploy now
+            <p>{t('title')}</p>
+
           </a>
           <a
             href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
