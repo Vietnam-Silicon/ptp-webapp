@@ -13,18 +13,18 @@ const Index = () => {
 
   const initMap = () => {
     const map = new window.google.maps.Map(document.getElementById("map_div"), {
-      center: { lat: 33.813358, lng: -117.923706 }, // Centered between start and end
-      zoom: 12, // Closer zoom for a detailed view
+      center: { lat: 14.8458754, lng: 101.9391654 },
+      zoom: 8, // Closer zoom for a detailed view
     });
 
     const pointGroup = [
-      [{ lat: 33.818038, lng: -117.928492 }, { lat: 33.808678, lng: -117.918921 }],
-      [{ lat: 33.818038, lng: -117.928492 }, { lat: 33.803333, lng: -117.955278 }],
-      [{ lat: 33.818038, lng: -117.928492 }, { lat: 33.808038, lng: -117.948495 }],
-      [{ lat: 33.808678, lng: -117.918921 }, { lat: 33.758678, lng: -117.948921 }],
-      [{ lat: 33.803333, lng: -117.955278 }, { lat: 33.758678, lng: -117.948921 }],
-      [{ lat: 33.808038, lng: -117.948495 }, { lat: 33.758678, lng: -117.948921 }],
-      [{ lat: 33.758678, lng: -117.948921 }, { lat: 33.798038, lng: -117.848921 }],
+      [{ lat: 15.1621573, lng: 99.8708099 }, { lat: 14.5723432, lng: 99.4495777 }],
+      [{ lat: 15.1621573, lng: 99.8708099 }, { lat: 15.2005259, lng: 100.2527648 }],
+      [{ lat: 15.1621573, lng: 99.8708099 }, { lat: 16.2471285, lng: 100.5556779 }],
+      [{ lat: 14.5723432, lng: 99.4495777 }, { lat: 14.963241, lng: 101.437353 }],
+      [{ lat: 15.2005259, lng: 100.2527648 }, { lat: 14.963241, lng: 101.437353 }],
+      [{ lat: 16.2471285, lng: 100.5556779 }, { lat: 14.963241, lng: 101.437353 }],
+      [{ lat: 14.963241, lng: 101.437353 }, { lat: 14.2381739, lng: 103.1152752 }],
     ];
     for (let point of pointGroup) {
       const [coordStart, coordEnd] = point;
@@ -40,7 +40,7 @@ const Index = () => {
         const interpolatedPoint = window.google.maps.geometry.spherical.interpolate(start, end, fraction);
 
         // Offset latitude to create the curve effect
-        const curveOffset = Math.sin(fraction * Math.PI) * 0.008; // Adjust curvature strength
+        const curveOffset = Math.sin(fraction * Math.PI) * 0.25; // Adjust curvature strength
         const offsetLat = interpolatedPoint.lat() + curveOffset;
 
         curveCoordinates.push(new window.google.maps.LatLng(offsetLat, interpolatedPoint.lng()));
@@ -58,12 +58,12 @@ const Index = () => {
     }
 
     [
-      { lat: 33.818038, lng: -117.928492 },
-      { lat: 33.808678, lng: -117.918921 },
-      { lat: 33.803333, lng: -117.955278 },
-      { lat: 33.808038, lng: -117.948495 },
-      { lat: 33.758678, lng: -117.948921 },
-      { lat: 33.798038, lng: -117.848921 },
+      { lat: 15.1621573, lng: 99.8708099 },
+      { lat: 14.5723432, lng: 99.4495777 },
+      { lat: 15.2005259, lng: 100.2527648 },
+      { lat: 16.2471285, lng: 100.5556779 },
+      { lat: 14.963241, lng: 101.437353 },
+      { lat: 14.2381739, lng: 103.1152752 },
     ].forEach(item => {
       const marker = new window.google.maps.Marker({
         position: new window.google.maps.LatLng(item.lat, item.lng),
