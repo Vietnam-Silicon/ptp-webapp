@@ -32,11 +32,9 @@ const LayoutFlow = () => {
   }, 1000);
 
   useEffect(() => {
-
     if (rfInstance) {
       const flow = rfInstance.toObject();
       storeFlowDebounce(flow);
-
     }
 
   }, [rfInstance, storeFlowDebounce])

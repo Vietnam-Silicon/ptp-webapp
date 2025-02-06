@@ -2,7 +2,6 @@ import { memo, FC } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import Image from 'next/image';
 import {
-  Box,
   Card,
   Typography,
 } from '@mui/material';
@@ -19,14 +18,18 @@ const ResizableNode: FC<ResizableNodeProps> = ({ data }) => {
         borderRadius: '8px', padding: '8px', backgroundColor: data.selected ? '#d3d0d9' : 'white',
         display: 'flex',
         gap: '8px',
-        height: '100px',
+        height: '80px',
         width: '220px',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
       }}>
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-        <Image src="./file.svg" width="40" height="40" alt='image' />
-        </Box>
-        <Typography fontSize={12} style={{textWrap: 'wrap'}}>
+        <Image src="./delivery-truck.svg" width="40" height="40" alt='image' />
+        <Typography fontSize={12} style={{ textWrap: 'wrap' }}>
           {data.label}
+        </Typography>
+        <Typography fontSize={10} style={{ textWrap: 'wrap' }}>
+          06/02/2025 - 16/02/2025
         </Typography>
       </Card>
 
