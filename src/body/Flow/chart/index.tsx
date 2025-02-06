@@ -1,4 +1,3 @@
-
 'use client'
 
 import React, { useState, useEffect } from 'react';
@@ -12,16 +11,15 @@ import {
   Edge,
   Node,
 } from '@xyflow/react';
-import '@xyflow/react/dist/style.css';
 import { useTranslations } from 'next-intl';
-
+import { Popover, Typography } from '@mui/material';
 import { orderBy, debounce } from 'lodash-es';
+import '@xyflow/react/dist/style.css';
 
 import ResizableNode from './ResizeableNode';
 import Floating from './SimpleFloating';
 import { returnData, flowStorageKey } from './constants';
 import { parseFlowData, transform } from './utils';
-import { Popover, Typography } from '@mui/material';
 
 const LayoutFlow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
