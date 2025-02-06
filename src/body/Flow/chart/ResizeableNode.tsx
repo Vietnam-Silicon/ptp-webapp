@@ -2,30 +2,33 @@ import { memo, FC } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import Image from 'next/image';
 import {
-  Box,
   Card,
   Typography,
 } from '@mui/material';
 
 interface ResizableNodeProps {
   data: { label: string, id: number, selected?: boolean };
+  selected?: boolean;
 }
 
 const ResizableNode: FC<ResizableNodeProps> = ({ data }) => {
   return (
     <>
-      <Card sx={{
-        whiteSpace: 'nowrap', border: '1px solid black',
-        borderRadius: '8px', padding: '8px', backgroundColor: data.selected ? '#d3d0d9' : 'white',
-        display: 'flex',
-        gap: '8px',
-        height: '100px',
-        width: '220px',
-      }}>
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-        <Image src="./file.svg" width="40" height="40" alt='image' />
-        </Box>
-        <Typography fontSize={12} style={{textWrap: 'wrap'}}>
+      <Card
+        sx={{
+          whiteSpace: 'nowrap', border: '1px solid black',
+          borderRadius: '8px', padding: '8px', backgroundColor: data.selected ? '#d3d0d9' : 'white',
+          display: 'flex',
+          gap: '8px',
+          height: '80px',
+          width: '220px',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Image src="./delivery-truck.svg" width="100" height="40" alt='image' />
+        <Typography fontSize={14} style={{ textWrap: 'wrap' }}>
           {data.label}
         </Typography>
       </Card>

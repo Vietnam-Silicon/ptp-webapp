@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getMessages } from 'next-intl/server';
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,16 +20,25 @@ export const metadata: Metadata = {
   description: "PTP - Portable Traceability Platform",
 };
 
-const RootLayout = ({
+const RootLayout = async ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) => (
-  <html lang="en">
-    <body className={`${geistSans.variable} ${geistMono.variable}`}>
-      {children}
-    </body>
-  </html>
-);
+}>) => {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
+  return (
+    <html lang={locale}>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <NextIntlClientProvider
+          locale="en"
+          messages={messages}>
+          {children}
+        </NextIntlClientProvider>
+      </body>
+    </html>
+  );
+}
 
 export default RootLayout;

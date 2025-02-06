@@ -1,4 +1,3 @@
-
 'use client'
 
 import React, { useState, useEffect } from 'react';
@@ -12,9 +11,10 @@ import {
   Edge,
   Node,
 } from '@xyflow/react';
-import '@xyflow/react/dist/style.css';
-
+import { useTranslations } from 'next-intl';
+import { Popover, Typography } from '@mui/material';
 import { orderBy, debounce } from 'lodash-es';
+import '@xyflow/react/dist/style.css';
 
 import ResizableNode from './ResizeableNode';
 import Floating from './SimpleFloating';
@@ -25,6 +25,13 @@ const LayoutFlow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance<Node, Edge>>();
+
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const t = useTranslations('HomePage');
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   const { setViewport } = useReactFlow();
 
   const storeFlowDebounce = debounce((data) => {
@@ -32,11 +39,9 @@ const LayoutFlow = () => {
   }, 1000);
 
   useEffect(() => {
-
     if (rfInstance) {
       const flow = rfInstance.toObject();
       storeFlowDebounce(flow);
-
     }
 
   }, [rfInstance, storeFlowDebounce])
@@ -63,9 +68,15 @@ const LayoutFlow = () => {
 
   }, [setNodes, setEdges, setViewport]);
 
+
+  const onNodeClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
   return (
     <>
       <ReactFlow
+        onNodeClick={onNodeClick}
         selectionOnDrag={false}
         onInit={setRfInstance}
         proOptions={{ hideAttribution: true }}
@@ -76,6 +87,19 @@ const LayoutFlow = () => {
         nodeTypes={{ resizableNode: ResizableNode }}
         edgeTypes={{ floating: Floating }}
       />
+      <Popover
+        id="basic-popover"
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        disableScrollLock
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+      >
+        <Typography sx={{ p: 2 }}>{t('title')}</Typography>
+      </Popover>
     </>
   );
 };
