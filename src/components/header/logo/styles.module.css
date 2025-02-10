@@ -1,10 +1,10 @@
-.logo-container {
+.container {
   display: flex;
   gap: 16px;
   cursor: pointer;
 }
 
-.brand-name {
+.brand {
   display: flex;
   justify-content: center;
   align-items: center;

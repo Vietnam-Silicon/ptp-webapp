@@ -1,9 +1,9 @@
-import './styles.css';
+import styles from  './styles.module.css';
 
 const Index = () => (
-  <div className="logo-container">
-    <img className="logo" src="./logo.png" alt="BKS" />
-    <span className="brand-name">
+  <div className={styles.container}>
+    <img className={styles.logo} src="./logo.png" alt="BKS" />
+    <span className={styles.brand}>
       BKS
     </span>
   </div>
