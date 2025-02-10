@@ -14,7 +14,7 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 
-import Logo from '../logo';
+import Logo from '../Logo';
 
 const Index = () => {
   const [open, setOpen] = React.useState(false);

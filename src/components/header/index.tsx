@@ -1,5 +1,5 @@
-import Drawer from './drawer';
-import Logo from './logo';
+import Drawer from './Drawer';
+import Logo from './Logo';
 import "./styles.css";
 
 const Index = () => (
