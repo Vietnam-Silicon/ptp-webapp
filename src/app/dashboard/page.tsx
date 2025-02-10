@@ -1,3 +1,5 @@
-const Index = () => <div>Dashboard</div>;
+import Dashboard from 'body/dashboard';
+
+const Index = () => <Dashboard />;
 
 export default Index;
