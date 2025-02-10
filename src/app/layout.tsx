@@ -31,11 +31,13 @@ const RootLayout = async ({
   return (
     <html lang={locale}>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <NextIntlClientProvider
-          locale="en"
-          messages={messages}>
-          {children}
-        </NextIntlClientProvider>
+        <main>
+          <NextIntlClientProvider
+            locale="en"
+            messages={messages}>
+            {children}
+          </NextIntlClientProvider>
+        </main>
       </body>
     </html>
   );
