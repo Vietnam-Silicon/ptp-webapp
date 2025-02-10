@@ -1,8 +1,14 @@
-import styles from  './styles.module.css';
+import Image from 'next/image';
+import styles from './styles.module.css';
 
 const Index = () => (
   <div className={styles.container}>
-    <img className={styles.logo} src="./logo.png" alt="BKS" />
+    <Image
+      width={24}
+      height={24}
+      src="/logo.png"
+      alt="BKS"
+    />
     <span className={styles.brand}>
       BKS
     </span>

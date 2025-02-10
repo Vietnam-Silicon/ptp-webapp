@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import Drawer from './Drawer';
 import Logo from './Logo';
 import styles from './styles.module.css';
@@ -9,7 +11,12 @@ const Index = () => (
       <Logo />
     </div>
     <div className={styles.right}>
-      <img className={styles.avatar} src="./avatar.png" alt="Avatar" />
+      <Image
+        width={24}
+        height={24}
+        src="/avatar.png"
+        alt="Avatar"
+      />
       <div className={styles.name}>Stebin Ben</div>
     </div>
   </div>

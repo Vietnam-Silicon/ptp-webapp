@@ -11,7 +11,7 @@ import {
   Edge,
   Node,
 } from '@xyflow/react';
-import { useTranslations } from 'next-intl';
+// import { useTranslations } from 'next-intl';
 import { Popover, Typography } from '@mui/material';
 import { orderBy, debounce } from 'lodash-es';
 
@@ -28,7 +28,6 @@ const LayoutFlow = () => {
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance<Node, Edge>>();
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const t = useTranslations('home-page');
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -95,7 +94,7 @@ const LayoutFlow = () => {
           horizontal: 'left',
         }}
       >
-        <Typography sx={{ p: 2 }}>{t('title')}</Typography>
+        <Typography sx={{ p: 2 }}>{'title'}</Typography>
       </Popover>
     </>
   );

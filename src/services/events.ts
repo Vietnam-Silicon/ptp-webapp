@@ -22,6 +22,11 @@ export const eventByPatchCode = async (code: string): Promise<any> => {
   return data;
 };
 
+export const getEvents = async (params: any): Promise<any> => {
+  const data = await getEvent(params);
+  return data;
+}
+
 export const workflowTemplate = async (code: string): Promise<any> => {
   const data = await get(`/items/WorkflowTemplates/${code}`, {
     params: {

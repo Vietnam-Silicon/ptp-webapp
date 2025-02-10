@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'https://api.example.com', // Replace with your API base URL
+  baseURL: 'http://ptp-directus-alb-1876176935.ap-southeast-1.elb.amazonaws.com', // Replace with your API base URL
   timeout: 30000, // Request timeout in milliseconds
 });
 
@@ -31,6 +31,9 @@ const call = async <T>(endpoint: string, config?: AxiosRequestConfig): Promise<T
     const response = await apiClient.request<T>({
       url: endpoint,
       ...config,
+      headers: {
+        'Authorization': 'Bearer T4UdgMRWLswlnKUDfAKSgOP8iHJqundQ'
+      }
     });
     return response.data;
   } catch (error) {
