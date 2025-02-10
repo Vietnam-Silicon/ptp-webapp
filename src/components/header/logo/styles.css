@@ -1,0 +1,17 @@
+.logo-container {
+  display: flex;
+  gap: 16px;
+  cursor: pointer;
+}
+
+.brand-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+}
+
+.logo {
+  height: 24px;
+  width: 24px;
+}
