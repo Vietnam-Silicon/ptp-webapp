@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -14,12 +14,13 @@ import {
 import { useTranslations } from 'next-intl';
 import { Popover, Typography } from '@mui/material';
 import { orderBy, debounce } from 'lodash-es';
-import '@xyflow/react/dist/style.css';
 
 import ResizableNode from './ResizeableNode';
 import Floating from './SimpleFloating';
 import { returnData, flowStorageKey } from './constants';
 import { parseFlowData, transform } from './utils';
+
+import '@xyflow/react/dist/style.css';
 
 const LayoutFlow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
@@ -27,7 +28,7 @@ const LayoutFlow = () => {
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance<Node, Edge>>();
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const t = useTranslations('HomePage');
+  const t = useTranslations('home-page');
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -43,11 +44,9 @@ const LayoutFlow = () => {
       const flow = rfInstance.toObject();
       storeFlowDebounce(flow);
     }
-
-  }, [rfInstance, storeFlowDebounce])
+  }, [rfInstance, storeFlowDebounce]);
 
   useEffect(() => {
-
     const flow = parseFlowData(localStorage.getItem(flowStorageKey));
 
     if (!flow) {
@@ -65,9 +64,7 @@ const LayoutFlow = () => {
     setNodes(nodes);
     setEdges(edges);
     setViewport({ x, y, zoom });
-
   }, [setNodes, setEdges, setViewport]);
-
 
   const onNodeClick = (event: any) => {
     setAnchorEl(event.currentTarget);
