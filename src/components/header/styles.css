@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  padding: 8px;
+  height: 60px;
+  border-bottom: 1px solid #1a1a1a;
+  justify-content: space-between;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.avatar {
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+}

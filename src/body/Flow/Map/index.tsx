@@ -83,7 +83,7 @@ const Index = () => {
 
   return (
     <>
-      <Script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false&libraries=geometry&callback=initMap" />
+      <Script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false&libraries=geometry&callback=initMap&loading=async" />
       <div id="map_div" style={{ height: 400 }}></div>
     </>
   );
