@@ -6,13 +6,17 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dev:https": "next dev --experimental-https"
   },
   "dependencies": {
+    "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@googlemaps/js-api-loader": "^1.16.8",
+    "@mui/icons-material": "^6.4.3",
     "@mui/material": "^6.4.3",
+    "@mui/material-nextjs": "^6.4.3",
     "@xyflow/react": "^12.4.2",
     "axios": "^1.7.9",
     "lodash-es": "^4.17.21",
@@ -20,7 +24,8 @@
     "next-client-cookies": "^2.0.1",
     "next-intl": "^3.26.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-qr-barcode-scanner": "^2.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
