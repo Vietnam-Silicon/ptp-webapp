@@ -2,12 +2,6 @@
 
 import { TransportationDetail } from 'body/transportation/Detail';
 
-const Index = () => {
-  return (
-    <>
-      <TransportationDetail />
-    </>
-  );
-};
+const Index = () => <TransportationDetail />;
 
 export default Index;

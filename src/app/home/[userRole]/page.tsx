@@ -17,11 +17,7 @@ const Index = () => {
 
   const userRole = params.userRole as unknown as UserRoleEnum;
 
-  return (
-    <>
-      <Home userRole={userRole} />
-    </>
-  );
+  return <Home userRole={userRole} />;
 };
 
 export default Index;

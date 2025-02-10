@@ -2,8 +2,6 @@
 
 import { Login } from 'body/login';
 
-export default function Home() {
-  return (
-    <Login />
-  );
-}
+const Index = () => <Login />;
+
+export default Index;
