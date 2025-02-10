@@ -1,16 +1,29 @@
 'use client';
-import { useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { Box, Button, Typography } from '@mui/material';
 
-import { ScanModal, TransportCard } from 'components';
+import { TransportCard } from 'components';
+import { ScanModal } from 'components/ScanModal';
 
 import { SampleData } from './Transportation';
-import { Box, Button, Typography } from '@mui/material';
 
 export const TransportationDetail = () => {
   const params = useParams<{ id?: string }>();
+  const route = useRouter();
   const [showScanModal, setShowScanModal] = useState(false);
   const [scanData, setScanData] = useState<string>();
+
+  const onScan = (value?: string) => {
+    setScanData(value);
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      const pathName = `/transport/${params.id}/input-info`;
+      route.push(pathName);
+    }, 1000);
+  }, [params.id, route]);
 
   const data = SampleData.find((item) => item.id === params?.id);
 
@@ -83,11 +96,7 @@ export const TransportationDetail = () => {
           Scan
         </Button>
       </Box>
-      <ScanModal
-        onScan={setScanData}
-        onClose={() => setShowScanModal(false)}
-        open={showScanModal}
-      />
+      <ScanModal onScan={onScan} onClose={() => setShowScanModal(false)} open={showScanModal} />
     </>
   );
 };

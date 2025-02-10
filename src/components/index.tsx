@@ -1,6 +1,7 @@
 import Header from './Header';
 import { InfoCard } from './InfoCard';
 import { TransportCard } from './TransportCard';
-import { ScanModal } from './ScanModal';
+import { According } from './According';
+import { NavigationBack } from './NavigationBack';
 
-export { Header, InfoCard, TransportCard, ScanModal };
+export { InfoCard, TransportCard, According, NavigationBack, Header };
