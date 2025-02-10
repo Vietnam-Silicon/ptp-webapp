@@ -31,38 +31,32 @@ export const ScanModal = (props: ScanModalProps) => {
     <Drawer
       sx={{
         width: '100%',
+        maxWidth: '500px',
         flexShrink: 0,
         '& .MuiDrawer-paper': {
-          width: '100%',
+          width: '100%  ',
           boxSizing: 'border-box',
           height: '100%',
           padding: '20px',
-          backgroundColor: 'grey',
+          maxWidth: '500px',
+          backgroundColor: '#555555',
         },
       }}
+      disablePortal
       PaperProps={{ height: '100%' }}
       anchor={'bottom'}
       open={props.open}
       onClose={props.onClose}
     >
-      <Box
-        sx={{
-          flex: 1,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+      <Scanner
+        delay={200}
+        onUpdate={(err, result) => {
+          if (result) {
+            props.onScan(result.getText());
+            props.onClose();
+          }
         }}
-      >
-        <Scanner
-          delay={200}
-          onUpdate={(err, result) => {
-            if (result) {
-              props.onScan(result.getText());
-              props.onClose();
-            }
-          }}
-        />
-      </Box>
+      />
 
       <Button variant="contained" color="primary" fullWidth onClick={props.onClose}>
         Close

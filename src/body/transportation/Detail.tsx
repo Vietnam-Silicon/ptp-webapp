@@ -10,7 +10,7 @@ import { Box, Button, Typography } from '@mui/material';
 export const TransportationDetail = () => {
   const params = useParams<{ id?: string }>();
   const [showScanModal, setShowScanModal] = useState(false);
-  const [scanData, setScandata] = useState<string>();
+  const [scanData, setScanData] = useState<string>();
 
   const data = SampleData.find((item) => item.id === params?.id);
 
@@ -41,9 +41,7 @@ export const TransportationDetail = () => {
             <Typography component="p" color="text.secondary">
               Farm address
             </Typography>
-            <Typography component="p">
-              North of Chanthaburi City on Hwy 317
-            </Typography>
+            <Typography component="p">North of Chanthaburi City on Hwy 317</Typography>
           </Box>
 
           <Box component="div">
@@ -85,9 +83,8 @@ export const TransportationDetail = () => {
           Scan
         </Button>
       </Box>
-
       <ScanModal
-        onScan={setScandata}
+        onScan={setScanData}
         onClose={() => setShowScanModal(false)}
         open={showScanModal}
       />
