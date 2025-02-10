@@ -1,4 +1,4 @@
-'use-client';
+'use client';
 
 import * as React from 'react';
 import { Box, Modal, Typography, IconButton } from '@mui/material';
@@ -54,7 +54,7 @@ export const ScanModal = (props: ScanModalProps) => {
           <Box
             sx={{
               borderRadius: '12px',
-              overflow: 'hidden',
+              overflowY: 'hidden',
               border: '2px solid #fff',
               mb: '32px',
               '& video': {

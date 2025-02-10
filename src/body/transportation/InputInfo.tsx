@@ -1,11 +1,15 @@
 'use client';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { get } from 'lodash-es';
 
+import { DatePicker, Input, TimePicker } from 'controls';
 import { NavigationBack, According } from 'components';
 import type { AccordingData } from 'components/According';
+import { TransportingInformationType } from 'types/Transportation';
+import { UserRoleEnum } from 'body/login/constants';
 
 const SampleData: AccordingData = [
   {
@@ -53,9 +57,33 @@ const SampleData: AccordingData = [
 
 export const InputInfo: FC = () => {
   const router = useRouter();
+  const [formState, setFormState] = useState<Partial<TransportingInformationType>>();
+
+  const onChangeForm = (key: keyof TransportingInformationType, value?: string) => {
+    setFormState((prevState) => ({ ...prevState, [key]: value }));
+  };
 
   const onGoBack = () => {
     router.back();
+  };
+
+  const checkIsValidForm = () => {
+    if (!formState) return false;
+
+    let isValid = true;
+
+    for (const formKey in formState) {
+      if (!get(formState, formKey, undefined)) {
+        isValid = false;
+        break;
+      }
+    }
+
+    return isValid;
+  };
+
+  const onSubmit = () => {
+    router.push(`/successful/${UserRoleEnum.Transportation}`);
   };
 
   return (
@@ -65,14 +93,108 @@ export const InputInfo: FC = () => {
         width: '100%',
         height: '100%',
         overflowY: 'auto',
-        padding: '20px',
         display: 'flex',
         flexDirection: 'column',
-        gap: '12px',
+        gap: '16px',
       }}
     >
       <NavigationBack content="Durian receiving information" onBack={onGoBack} />
       <According title="Detailed information" data={SampleData} />
+      <Box
+        component="form"
+        mt="8px"
+        onSubmit={onSubmit}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px',
+          flex: 1,
+        }}
+      >
+        <Input
+          id="crates_id"
+          name="crates"
+          onChange={(event) => onChangeForm('crates', event.target.value)}
+          fullWidth
+          label="Number of crates"
+          placeholder="Enter number of crates"
+        />
+        <Input
+          id="temp_id"
+          name="temp"
+          fullWidth
+          label="Temperature (Celsius)"
+          type="number"
+          placeholder="Enter temperature"
+          onChange={(event) => onChangeForm('temp', event.target.value)}
+        />
+        <Input
+          id="moisture_id"
+          name="moisture"
+          fullWidth
+          label="Moisture (%)"
+          placeholder="Enter moisture"
+          type="number"
+          multiline
+          onChange={(event) => onChangeForm('moisture', event.target.value)}
+        />
+        <Box
+          component="div"
+          sx={{
+            display: 'flex',
+            gap: '16px',
+          }}
+        >
+          <DatePicker
+            name="startDate"
+            sx={{ width: '100%' }}
+            label="Start date"
+            onChange={(value) => onChangeForm('moisture', value?.toISOString())}
+          />
+          <TimePicker
+            name="startTime"
+            sx={{ width: '100%' }}
+            label="Start time"
+            onChange={(value) => onChangeForm('startTime', value?.toISOString())}
+          />
+        </Box>
+        <Box
+          component="div"
+          sx={{
+            display: 'flex',
+            gap: '16px',
+          }}
+        >
+          <DatePicker
+            name="arriveDate"
+            sx={{ width: '100%' }}
+            label="Est arrive date"
+            onChange={(value) => onChangeForm('arriveDate', value?.toISOString())}
+          />
+          <TimePicker
+            name="arriveTime"
+            sx={{ width: '100%' }}
+            label="Est arrive time"
+            onChange={(value) => onChangeForm('arriveTime', value?.toISOString())}
+          />
+        </Box>
+      </Box>
+
+      <Box
+        component="div"
+        sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}
+      >
+        <Button
+          disabled={!checkIsValidForm()}
+          variant="contained"
+          fullWidth
+          color="secondary"
+          type="submit"
+          onClick={onSubmit}
+        >
+          Submit
+        </Button>
+      </Box>
     </Box>
   );
 };

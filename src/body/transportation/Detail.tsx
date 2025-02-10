@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Box, Button, Typography } from '@mui/material';
 
@@ -16,14 +16,15 @@ export const TransportationDetail = () => {
 
   const onScan = (value?: string) => {
     setScanData(value);
+    if (value) {
+      goNextPage();
+    }
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      const pathName = `/transport/${params.id}/input-info`;
-      route.push(pathName);
-    }, 1000);
-  }, [params.id, route]);
+  const goNextPage = () => {
+    const pathName = `/transport/${params.id}/input-info`;
+    route.push(pathName);
+  };
 
   const data = SampleData.find((item) => item.id === params?.id);
 
