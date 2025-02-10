@@ -27,7 +27,7 @@ const ResizableNode: FC<ResizableNodeProps> = ({ data }) => {
           alignItems: 'center',
         }}
       >
-        <Image src="./delivery-truck.svg" width="100" height="40" alt='image' />
+        <Image src="/delivery-truck.svg" width="100" height="40" alt='image' />
         <Typography fontSize={14} style={{ textWrap: 'wrap' }}>
           {data.label}
         </Typography>

@@ -1,16 +1,23 @@
+import Image from 'next/image';
+
 import Drawer from './Drawer';
 import Logo from './Logo';
-import "./styles.css";
+import styles from './styles.module.css';
 
 const Index = () => (
-  <div className="container">
-    <div className="left">
+  <div className={styles.container}>
+    <div className={styles.left}>
       <Drawer />
       <Logo />
     </div>
-    <div className="right">
-      <img className="avatar" src="./avatar.png" alt="Avatar" />
-      <div className="name">Stebin Ben</div>
+    <div className={styles.right}>
+      <Image
+        width={24}
+        height={24}
+        src="/avatar.png"
+        alt="Avatar"
+      />
+      <div className={styles.name}>Stebin Ben</div>
     </div>
   </div>
 );
