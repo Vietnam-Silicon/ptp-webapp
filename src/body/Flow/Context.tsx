@@ -3,14 +3,20 @@ import { useParams } from 'next/navigation';
 
 import {
   workflowTemplate,
+  saveWFTemplate,
 } from 'services/events';
+import {
+  safeJSONParse
+} from 'unknown/jsonTransform';
 
 interface FlowContextType {
+  currentId: string;
   loading: boolean;
   data: any;
-  nodes: any;
   currentNode: any | undefined;
   setCurrent: (a: any) => void;
+  config: any;
+  setConfig: (a: any) => void;
 }
 
 interface FlowProdiverProps {
@@ -18,11 +24,13 @@ interface FlowProdiverProps {
 }
 
 const FlowContext = createContext<FlowContextType | undefined>({
+  currentId: '',
   loading: false,
   data: {},
-  nodes: [],
   currentNode: undefined,
   setCurrent: () => { },
+  config: {},
+  setConfig: () => { },
 });
 
 const delay = (id: any) => new Promise(resolve => {
@@ -30,7 +38,7 @@ const delay = (id: any) => new Promise(resolve => {
     workflowTemplate(id).then(res => {
       resolve(res.data);
     });
-  }, 2000);
+  }, 0);
 });
 
 const FlowProdiver = ({ children }: FlowProdiverProps) => {
@@ -38,6 +46,7 @@ const FlowProdiver = ({ children }: FlowProdiverProps) => {
   const [data, setData] = useState<any>(null);
   const [isPending, startTransition] = useTransition();
   const [currentNode, setCurrent] = useState<any>(null);
+  const [config, setConfig] = useState<any>({});
 
   useEffect(() => {
     startTransition(async () => {
@@ -46,14 +55,31 @@ const FlowProdiver = ({ children }: FlowProdiverProps) => {
     });
   }, [params]);
 
+  useEffect(() => {
+    const jsonData = safeJSONParse(data?.chart_config);
+
+    if (Object.keys(config || {}).length > 0) {
+      saveWFTemplate(params.id, {
+        ...jsonData,
+        nodesPosition: {
+          ...(jsonData.nodesPosition || {}),
+          ...config
+        }
+      });
+    }
+
+  }, [config, params.id, data]);
+
   return (
     <FlowContext.Provider
       value={{
+        currentId: params.id,
         loading: isPending,
         currentNode: currentNode,
-        nodes: data?.nodes,
         data,
         setCurrent,
+        config,
+        setConfig,
       }}
     >
       {children}

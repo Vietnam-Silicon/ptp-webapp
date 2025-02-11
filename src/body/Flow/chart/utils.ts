@@ -1,35 +1,29 @@
 import { Edge, MarkerType, Node } from '@xyflow/react';
 
-import { NodeResponse } from './index.d';
-import { intialPositionX, intialPositionY, distanceX, distanceY } from './constants'
+import {
+  safeJSONParse
+} from 'unknown/jsonTransform';
 
-export const transform = (nodes: NodeResponse[] = []): { initialNodes: Node[], initialEdges: Edge[] } => {
-  // let positionX = intialPositionX;
-  // let positionY = intialPositionY;
-  // let currentLevel = 1;
-  // let orderLevel = 0;
+import { NodeResponse } from './index.d';
+
+export const transform = (nodes: NodeResponse[] = [], currentId: string, chartConfig: any): { initialNodes: Node[], initialEdges: Edge[] } => {
+
+  const { nodesPosition = {} } = safeJSONParse(chartConfig);
 
   const { initialNodes, initialEdges } = nodes.reduce((result: {
     initialNodes: Node[];
     initialEdges: Edge[];
   }, item: NodeResponse) => {
-    const { parent_nodes, level_in_workflow } = item;
-
-    // if (level_in_workflow === currentLevel) {
-    //   positionY += (distanceY * orderLevel);
-    //   orderLevel += 1;
-    // } else {
-    //   positionY = 50;
-    //   orderLevel = 1;
-    //   positionX += distanceX;
-    //   currentLevel = level_in_workflow;
-    // }
+    const { parent_nodes } = item;
 
     result.initialNodes.push({
       id: `${item.id}`,
-      data: { label: item.name, id: item.id, selected: item.id === 2 },
-      // position: { x: item.x ?? positionX, y: item.y ?? positionY },
-      position: { x: 0, y: 0 },
+      data: { label: item.name, id: item.id, selected: `${item.id}` === currentId },
+
+      position: {
+        x: nodesPosition[item.id]?.x || 0,
+        y: nodesPosition[item.id]?.y || 0,
+      },
       type: 'resizableNode',
     });
 

@@ -47,6 +47,9 @@ export const get = async <T>(endpoint: string, config?: AxiosRequestConfig): Pro
 export const post = async <T>(endpoint: string, data?: any, config?: AxiosRequestConfig): Promise<T> =>
   call<T>(endpoint, { ...config, method: 'POST', data });
 
+export const patch = async <T>(endpoint: string, data?: any, config?: AxiosRequestConfig): Promise<T> =>
+  call<T>(endpoint, { ...config, method: 'PATCH', data });
+
 export const put = async <T>(endpoint: string, data?: any, config?: AxiosRequestConfig): Promise<T> =>
   call<T>(endpoint, { ...config, method: 'PUT', data });
 

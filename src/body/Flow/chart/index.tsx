@@ -14,25 +14,39 @@ import '@xyflow/react/dist/style.css';
 
 import { FlowContext } from '../Context';
 
-import ResizableNode from './Node';
+import ResizableNode from './node';
 import { transform } from './utils';
 import styles from './styles.module.css';
 
 const LayoutFlow: FC = () => {
-  const { nodes: data } = useContext(FlowContext) ?? {};
+  const {
+    data,
+    currentId,
+    setConfig,
+    config
+  } = useContext(FlowContext) ?? {};
+  const { chart_config: chartConfig, nodes: nodesData } = data || {};
 
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
 
   useEffect(() => {
-    if (data?.length) {
-      const orderBySort = orderBy(data, ['sort'], ['asc']);
-      const { initialNodes, initialEdges } = transform(orderBySort);
+    if (nodesData?.length) {
+      const orderBySort = orderBy(nodesData, ['sort'], ['asc']);
+      const { initialNodes, initialEdges } = transform(orderBySort, `${currentId}`, chartConfig);
 
       setNodes(initialNodes);
       setEdges(initialEdges);
     }
   }, [data]);
+
+  const getConfig = (_e: React.MouseEvent, node: any) => {
+
+    setConfig({
+      ...config,
+      [node.id]: node.position,
+    });
+  }
 
   return (
     <ReactFlow
@@ -43,6 +57,7 @@ const LayoutFlow: FC = () => {
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       nodeTypes={{ resizableNode: ResizableNode }}
+      onNodeDragStop={getConfig}
     />
   );
 };

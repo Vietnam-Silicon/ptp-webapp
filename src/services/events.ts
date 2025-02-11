@@ -1,4 +1,4 @@
-import { get } from './requests';
+import { get, patch } from './requests';
 
 const getEvent = <T>(params: any): Promise<T> => get('/items/Events', { params });
 
@@ -31,9 +31,15 @@ export const workflowTemplate = async (code: string): Promise<any> => {
   const data = await get(`/items/WorkflowTemplates/${code}`, {
     params: {
       fields: [
-        "name,description,chart_config,primary_image.filename_disk,nodes.*,nodes.parent_nodes.*"
+        "name,description,chart_config,primary_image.filename_disk,nodes.*,nodes.parent_nodes.*,node.icon.*"
       ]
     }
   });
   return data;
 };
+
+export const saveWFTemplate = async (code: string, config: any) => {
+  await patch(`/items/WorkflowTemplates/${code}`, {
+    chart_config: config,
+  })
+}
