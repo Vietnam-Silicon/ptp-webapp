@@ -1,66 +1,37 @@
 'use client';
 
-import { useEffect, useState, useTransition } from 'react';
-import { useParams } from 'next/navigation';
+import { useContext } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import {
-  workflowTemplate,
-  getEvents,
-} from 'services/events';
+import { FlowContext, FlowProdiver } from './Context';
 
-import Flow from './chart';
+import Chart from './chart';
 import Map from './map';
-import styles from './styles.module.css'
+import styles from './styles.module.css';
 
-const delay = (id: any) => new Promise(resolve => {
-  setTimeout(() => {
-    workflowTemplate(id).then(res => {
-      resolve(res.data);
-    });
-  }, 200);
-});
-
-const toFlow = (nodes: any) => {
-  return [];
-};
-const toMap = (nodes: any) => {
-  return [];
-};
-
-const Index = () => {
-  const params = useParams<{ id: string }>();
-  const [data, setData] = useState<any>(null);
-  const [isPending, startTransition] = useTransition();
-  const [currentNode, setCurrent] = useState<any>(null);
-
-  useEffect(() => {
-    startTransition(async () => {
-      const res = await delay(params.id);
-      setData(res);
-    });
-  }, [params]);
-
+const Content = () => {
+  const { loading } = useContext(FlowContext) ?? {};
   return (
     <>
-      {isPending && (
+      {loading && (
         <div className={styles.loading}>
           <CircularProgress />
         </div>
       )}
-      {!isPending && (
+      {!loading && (
         <>
-          <Flow
-            data={toFlow(data?.node)}
-            setNode={setCurrent}
-          />
-          <Map
-            data={toMap(data?.node)}
-          />
+          <Chart />
+          {/* <Map /> */}
         </>
       )}
     </>
   );
 };
+
+const Index = () => (
+  <FlowProdiver>
+    <Content />
+  </FlowProdiver>
+);
 
 export default Index;
