@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import {
   ReactFlow,
   ReactFlowProvider,
@@ -11,18 +11,23 @@ import {
   Edge,
   Node,
 } from '@xyflow/react';
-// import { useTranslations } from 'next-intl';
 import { Popover, Typography } from '@mui/material';
 import { orderBy, debounce } from 'lodash-es';
 
 import ResizableNode from './ResizeableNode';
 import Floating from './SimpleFloating';
-import { returnData, flowStorageKey } from './constants';
+import { flowStorageKey } from './constants';
 import { parseFlowData, transform } from './utils';
 
 import '@xyflow/react/dist/style.css';
 
-const LayoutFlow = () => {
+interface FlowProps {
+  data: any;
+  setNode: () => void;
+}
+const LayoutFlow: FC<FlowProps> = (props) => {
+  const { data } = props;
+
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance<Node, Edge>>();
@@ -49,7 +54,7 @@ const LayoutFlow = () => {
     const flow = parseFlowData(localStorage.getItem(flowStorageKey));
 
     if (!flow) {
-      const orderDataByLevel = orderBy([...returnData.data.nodes], ['level_in_workflow'], ['asc']);
+      const orderDataByLevel = orderBy(data, ['level_in_workflow'], ['asc']);
       const { initialNodes, initialEdges } = transform(orderDataByLevel);
       setNodes(initialNodes);
       setEdges(initialEdges);
@@ -65,7 +70,8 @@ const LayoutFlow = () => {
     setViewport({ x, y, zoom });
   }, [setNodes, setEdges, setViewport]);
 
-  const onNodeClick = (event: any) => {
+  const onNodeClick = (event: any, node: any) => {
+    console.log(node);
     setAnchorEl(event.currentTarget);
   };
 

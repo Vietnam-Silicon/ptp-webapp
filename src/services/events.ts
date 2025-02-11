@@ -6,7 +6,7 @@ export const eventByUniqueCode = async (code: string): Promise<any> => {
   const data = await getEvent<any>({
     filter: { unique_code: { "_eq": code } },
     fields: [
-      "name,description,position_latitude,position_longitude,event_time,recorded_by.*,main_product.*,unique_code,patch_code,files.*,bind_to_workflow_node.*"
+      "name,description,position_latitude,position_longitude,event_time,recorded_by.*,main_product.*,unique_code,trace_id,files.*,bind_to_workflow_node.*"
     ]
   });
   return data;
