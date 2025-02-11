@@ -1,23 +1,11 @@
+import { According } from './According';
 import Header from './Header';
 import { InfoCard } from './InfoCard';
-import { TransportCard } from './TransportCard';
-import { According } from './According';
 import { NavigationBack } from './NavigationBack';
 import { ScanModal } from './ScanModal';
-import { GeneralInformation } from './GeneralInformation';
-import { PieChart } from './PieChart';
-import { Box } from './Box';
-import { Typography } from './Typography';
+import type { GridColDef } from './Table'
+import Table from './Table'
+import { TransportCard } from './TransportCard';
 
-export {
-  InfoCard,
-  TransportCard,
-  According,
-  NavigationBack,
-  Header,
-  ScanModal,
-  GeneralInformation,
-  PieChart,
-  Box,
-  Typography,
-};
+export { According, Header, InfoCard, NavigationBack, ScanModal, Table, TransportCard };
+export type { GridColDef }
