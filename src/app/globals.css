@@ -34,4 +34,6 @@ body {
 
 .main-body {
   padding: 24px;
+  /* 60px is height of Header */
+  height: calc(100% - 60px);
 }
