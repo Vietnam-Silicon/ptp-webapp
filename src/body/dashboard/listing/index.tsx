@@ -1,9 +1,10 @@
 'use client';
 
-import clsx from 'clsx';
-import { type GridColDef, Table } from 'components';
+import clsx from 'clsx'
 import dayjs from 'dayjs';
 import Image from 'next/image';
+
+import { type GridColDef, Table } from 'components';
 import { getAsset } from 'unknown/domainConfig';
 
 import styles from './styles.module.css';
