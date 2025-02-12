@@ -24,7 +24,9 @@ export const eventByPatchCode = async (code: string): Promise<any> => {
 
 export const getEvents = async <T>(): Promise<any> => {
   const data = await getEvent<T>({
-    fields: 'id,unique_code,event_time,status,main_product.name,main_product.description,main_product.primary_image.filename_disk,recorded_by.name,recorded_by.description,recorded_by.logo.filename_disk,recorded_by.address,metadata.*,bind_to_workflow_node.id,trace_id'
+    fields: [
+      'id,unique_code,event_time,status,main_product.name,main_product.description,main_product.primary_image.filename_disk,recorded_by.name,recorded_by.description,recorded_by.logo.filename_disk,recorded_by.address,metadata.*,bind_to_workflow_node.id,trace_id'
+    ]
   });
   return data;
 }
