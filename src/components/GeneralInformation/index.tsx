@@ -1,5 +1,7 @@
-import { Box, Typography } from '@mui/material';
 import { FC } from 'react';
+
+import { Box } from 'components/Box';
+import { Typography } from 'components/Typography';
 
 interface GeneralInformationProps {
   title: string;

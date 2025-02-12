@@ -6,6 +6,8 @@ import { NavigationBack } from './NavigationBack';
 import { ScanModal } from './ScanModal';
 import { GeneralInformation } from './GeneralInformation';
 import { PieChart } from './PieChart';
+import { Box } from './Box';
+import { Typography } from './Typography';
 
 export {
   InfoCard,
@@ -16,4 +18,6 @@ export {
   ScanModal,
   GeneralInformation,
   PieChart,
+  Box,
+  Typography,
 };

@@ -1,13 +1,15 @@
 'use client';
 
 import { FC, useState } from 'react';
-import { Box, Button, Typography } from '@mui/material';
-import WbSunnyIcon from '@mui/icons-material/WbSunny';
-import WaterDropSharpIcon from '@mui/icons-material/WaterDropSharp';
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-
-import { InfoCard, GeneralInformation, PieChart, ScanModal } from 'components';
 import { useRouter } from 'next/navigation';
+
+import { InfoCard, GeneralInformation, PieChart, ScanModal, Typography, Box } from 'components';
+import {
+  WbSunny as WbSunnyIcon,
+  WaterDropSharp as WaterDropSharpIcon,
+  AddOutlined as AddOutlinedIcon,
+} from 'components/Icons';
+import { Button } from 'controls';
 
 const SampleChartData = [
   {

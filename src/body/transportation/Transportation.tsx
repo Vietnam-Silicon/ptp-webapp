@@ -2,8 +2,8 @@
 
 import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
+import { LocalShipping as LocalShippingIcon } from 'components/Icons';
 import { InfoCard, TransportCard } from 'components';
 
 export const SampleData = [

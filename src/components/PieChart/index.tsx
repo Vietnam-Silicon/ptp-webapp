@@ -1,7 +1,13 @@
 'use client';
 
 import { FC } from 'react';
-import { PieChart as OriginalPieChart, Pie, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import {
+  PieChart as OriginalPieChart,
+  Pie,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+} from 'components/Chart';
 
 type ChartValue = {
   name: string;
