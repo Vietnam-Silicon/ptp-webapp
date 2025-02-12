@@ -28,7 +28,8 @@
     "next-intl": "^3.26.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-qr-barcode-scanner": "^2.0.0"
+    "react-qr-barcode-scanner": "^2.0.0",
+    "recharts": "^2.15.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

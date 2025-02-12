@@ -21,7 +21,7 @@ type ScannerProps = {
 const Scanner = BarcodeScannerComponent as unknown as React.FC<ScannerProps>;
 
 interface ScanModalProps {
-  onClose: () => void;
+  onClose?: () => void;
   open: boolean;
   onScan: (value?: string) => void;
 }
@@ -63,10 +63,10 @@ export const ScanModal = (props: ScanModalProps) => {
             }}
           >
             <Scanner
+              delay={100}
               onUpdate={(err, result) => {
                 if (result) {
                   props.onScan(result.getText());
-                  props.onClose();
                 }
               }}
             />

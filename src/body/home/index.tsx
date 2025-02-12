@@ -3,7 +3,8 @@ import { Box, Typography } from '@mui/material';
 
 import { UserRoleEnum, UserRoles } from 'body/login/constants';
 
-import { Transportation } from '../transportation/Transportation';
+import { Transportation } from 'body/transportation/Transportation';
+import { Farmer } from 'body/farmer/Farmer';
 
 import styles from './home.module.css';
 
@@ -27,6 +28,7 @@ export const Home: FC<HomeProps> = ({ userRole }) => {
         </Typography>
       </Typography>
       {user.value === UserRoleEnum.Transportation && <Transportation />}
+      {user.value === UserRoleEnum.Farmer && <Farmer />}
     </Box>
   );
 };

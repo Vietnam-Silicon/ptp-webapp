@@ -4,5 +4,16 @@ import { TransportCard } from './TransportCard';
 import { According } from './According';
 import { NavigationBack } from './NavigationBack';
 import { ScanModal } from './ScanModal';
+import { GeneralInformation } from './GeneralInformation';
+import { PieChart } from './PieChart';
 
-export { InfoCard, TransportCard, According, NavigationBack, Header, ScanModal };
+export {
+  InfoCard,
+  TransportCard,
+  According,
+  NavigationBack,
+  Header,
+  ScanModal,
+  GeneralInformation,
+  PieChart,
+};
