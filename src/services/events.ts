@@ -23,7 +23,7 @@ export const eventByPatchCode = async (code: string): Promise<any> => {
 };
 
 export const getEvents = async (params: any): Promise<any> => {
-  const data = await getEvent(params);
+  const data = await getEvent<any>(params);
   return data;
 }
 
@@ -38,8 +38,16 @@ export const workflowTemplate = async (code: string): Promise<any> => {
   return data;
 };
 
-export const saveWFTemplate = async (code: string, config: any) => {
-  await patch(`/items/WorkflowTemplates/${code}`, {
-    chart_config: config,
-  })
-}
+export const saveWFTemplate = async (code: string, config: any) => patch(`/items/WorkflowTemplates/${code}`, {
+  chart_config: config,
+});
+
+export const getTraceBatch = async (code: string): Promise<any> => {
+  const data = await getEvent<any>({
+    filter: { trace_id: { "_eq": code } },
+    fields: [
+      "name,description,position_latitude,position_longitude,event_time,recorded_by.*,main_product.*,unique_code,trace_id,files.*,bind_to_workflow_node.*"
+    ]
+  });
+  return data;
+};

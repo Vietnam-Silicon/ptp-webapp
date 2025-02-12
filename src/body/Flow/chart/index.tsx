@@ -12,7 +12,7 @@ import {
 import { orderBy } from 'lodash-es';
 import '@xyflow/react/dist/style.css';
 
-import { FlowContext } from '../Context';
+import { FlowContext } from '../FlowContext';
 
 import ResizableNode from './node';
 import { transform } from './utils';

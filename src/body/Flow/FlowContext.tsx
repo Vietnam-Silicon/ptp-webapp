@@ -38,11 +38,11 @@ const delay = (id: any) => new Promise(resolve => {
     workflowTemplate(id).then(res => {
       resolve(res.data);
     });
-  }, 0);
+  }, 200);
 });
 
 const FlowProdiver = ({ children }: FlowProdiverProps) => {
-  const params = useParams<{ id: string }>();
+  const { flowId } = useParams<{ flowId: string }>();
   const [data, setData] = useState<any>(null);
   const [isPending, startTransition] = useTransition();
   const [currentNode, setCurrent] = useState<any>(null);
@@ -50,16 +50,16 @@ const FlowProdiver = ({ children }: FlowProdiverProps) => {
 
   useEffect(() => {
     startTransition(async () => {
-      const res = await delay(params.id);
+      const res = await delay(flowId);
       setData(res);
     });
-  }, [params]);
+  }, [flowId]);
 
   useEffect(() => {
     const jsonData = safeJSONParse(data?.chart_config);
 
     if (Object.keys(config || {}).length > 0) {
-      saveWFTemplate(params.id, {
+      saveWFTemplate(flowId, {
         ...jsonData,
         nodesPosition: {
           ...(jsonData.nodesPosition || {}),
@@ -68,12 +68,12 @@ const FlowProdiver = ({ children }: FlowProdiverProps) => {
       });
     }
 
-  }, [config, params.id, data]);
+  }, [config, flowId, data]);
 
   return (
     <FlowContext.Provider
       value={{
-        currentId: params.id,
+        currentId: flowId,
         loading: isPending,
         currentNode: currentNode,
         data,
