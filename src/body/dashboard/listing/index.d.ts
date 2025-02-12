@@ -5,6 +5,10 @@ export type EventModel = {
   unique_code: string,
   event_time: string,
   status: string,
+  trace_id: string,
+  bind_to_workflow_node: {
+    id: string
+  },
   main_product: {
     name: string,
     description: string,

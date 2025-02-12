@@ -4,8 +4,9 @@ import clsx from 'clsx'
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import { useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 
-import { Box, type GridColDef, Table } from 'components';
+import { Box, type GridColDef, GridRowParams, Table } from 'components';
 import { DatePicker, DebounceInput, MenuItem, Select } from 'controls';
 import { getAsset } from 'unknown/domainConfig';
 
@@ -63,6 +64,7 @@ const Status = ({ status }: { status: string }) => {
 }
 
 const Index = () => {
+  const router = useRouter()
   const { data: rawData, loading } = useEvents()
   const { filter, handleChange } = useFilter()
 
@@ -122,6 +124,10 @@ const Index = () => {
     return res
   }, [rawData])
 
+  const handleRowClick = ({ row }: GridRowParams<EventModel>) => {
+    router.push(`/flow/${row.bind_to_workflow_node?.id}/${row.trace_id}`)
+  };
+
   return (
     <>
       <Box className={styles.container}>
@@ -165,6 +171,7 @@ const Index = () => {
       </Box>
 
       <Table
+        onRowClick={handleRowClick}
         loading={loading}
         rows={data}
         columns={columns}

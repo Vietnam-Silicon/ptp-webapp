@@ -1,5 +1,5 @@
 import { Paper, Pagination, PaginationItem } from '@mui/material'
-import type { DataGridProps, GridColDef } from '@mui/x-data-grid'
+import type { DataGridProps, GridColDef, GridRowParams } from '@mui/x-data-grid'
 import { DataGrid, gridPageCountSelector, gridPageSelector, useGridApiContext, useGridSelector } from '@mui/x-data-grid'
 import { useEffect, useState } from 'react';
 
@@ -45,9 +45,8 @@ const Table = ({ rows, ...props }: DataGridProps) => {
     <Paper sx={{ height: 500, width: '100%' }}>
       <DataGrid
         rows={rows}
-        checkboxSelection
         sx={{ border: 0 }}
-        classes={{ columnHeaderTitle: styles.columnHeaderTitle, cell: styles.cell }}
+        classes={{ row: styles.row, columnHeaderTitle: styles.columnHeaderTitle, cell: styles.cell }}
         rowHeight={70}
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}
@@ -62,4 +61,4 @@ const Table = ({ rows, ...props }: DataGridProps) => {
 }
 
 export default Table
-export type { GridColDef }
+export type { GridColDef, GridRowParams }
