@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import Image from 'next/image';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import styles from './styles.module.css';
 

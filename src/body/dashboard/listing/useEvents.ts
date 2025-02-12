@@ -1,40 +1,18 @@
 import { useEffect, useState } from 'react';
 import { getEvents } from 'services/events';
+import { EventModel } from './index.d'
 
-export type Event = {
-  id: string
-  unique_code: string,
-  event_time: string,
-  status: string,
-  main_product: {
-    name: string,
-    description: string,
-    primary_image: {
-      filename_disk: string
-    }
-  },
-  recorded_by: {
-    name: string,
-    description: string,
-    address: string,
-    logo: {
-      filename_disk: string
-    }
-  },
-  metadata?: {
-    collection: string
-  }[]
-}
+const DELAY_TIME = 200
 
 const useEvents = () => {
-  const [data, setData] = useState<Event[]>([])
+  const [data, setData] = useState<EventModel[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const getData = async () => {
       try {
-        await new Promise(r => setTimeout(r, 3000));
-        const res = await getEvents<{ data: Event[] }>()
+        await new Promise(r => setTimeout(r, DELAY_TIME));
+        const res = await getEvents<{ data: EventModel[] }>()
 
         if (res?.data) {
           setData(res?.data)
