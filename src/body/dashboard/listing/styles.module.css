@@ -7,6 +7,10 @@
   background: #fff;
 }
 
+.row {
+  cursor: pointer;
+}
+
 .product {
   display: flex;
   gap: 8px;

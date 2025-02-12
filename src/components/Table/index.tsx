@@ -34,7 +34,7 @@ const initPaginationModel = {
   page: 0,
 }
 
-const Table = ({ rows, ...props }: DataGridProps) => {
+const Table = ({ rows, classes, ...props }: DataGridProps) => {
   const [paginationModel, setPaginationModel] = useState(initPaginationModel);
 
   useEffect(() => {
@@ -42,11 +42,10 @@ const Table = ({ rows, ...props }: DataGridProps) => {
   }, [rows])
 
   return (
-    <Paper sx={{ height: 500, width: '100%' }}>
+    <Paper className={styles.container}>
       <DataGrid
         rows={rows}
-        sx={{ border: 0 }}
-        classes={{ row: styles.row, columnHeaderTitle: styles.columnHeaderTitle, cell: styles.cell }}
+        classes={{ columnHeaderTitle: styles.columnHeaderTitle, cell: styles.cell, ...classes }}
         rowHeight={70}
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}

@@ -1,5 +1,7 @@
-.row {
-  cursor: pointer;
+.container {
+  height: 500px;
+  width: 100%;
+  min-width: 800px;
 }
 
 .columnHeaderTitle {

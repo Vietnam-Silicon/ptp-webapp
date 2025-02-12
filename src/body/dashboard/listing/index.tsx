@@ -17,10 +17,10 @@ import useFilter from './useFilter';
 
 const DATE_FORMAT = 'MMM DD,YYYY hh:mm'
 const columns: GridColDef<EventModel>[] = [
-  { field: 'unique_code', headerName: 'Patch/Lot', width: 200 },
-  { field: 'event_time', headerName: 'Event Time', renderCell: ({ row }) => dayjs(row.event_time).format(DATE_FORMAT), width: 200 },
-  { field: 'location', renderCell: ({ row }) => row.recorded_by?.address, headerName: 'Location', width: 140 },
-  { field: 'type', headerName: 'Type', renderCell: ({ row }) => row.metadata?.length ? row.metadata[0].collection : null, width: 170 },
+  { field: 'unique_code', headerName: 'Patch/Lot', flex: 1 },
+  { field: 'event_time', headerName: 'Event Time', renderCell: ({ row }) => dayjs(row.event_time).format(DATE_FORMAT), flex: 1 },
+  { field: 'location', renderCell: ({ row }) => row.recorded_by?.address, headerName: 'Location', flex: 1 },
+  { field: 'type', headerName: 'Type', renderCell: ({ row }) => row.metadata?.length ? row.metadata[0].collection : null, flex: 1 },
   {
     display: 'flex',
     field: 'product', headerName: 'Product', renderCell: ({ row }) => (
@@ -33,9 +33,9 @@ const columns: GridColDef<EventModel>[] = [
         <div><div className={styles.productTitle}>{row.main_product?.name}</div><div className={styles.productDes}>{row.main_product?.description}</div></div>
       </div>),
     sortable: false,
-    width: 200
+    flex: 2
   },
-  { display: 'flex', field: 'status', renderCell: ({ row }) => <Status status={row.status} />, headerName: 'Status', width: 100, sortable: false, },
+  { display: 'flex', field: 'status', renderCell: ({ row }) => <Status status={row.status} />, headerName: 'Status', flex: 1, sortable: false, },
   {
     display: 'flex',
     field: 'supplier', headerName: 'Suppliers', renderCell: ({ row }) => (
@@ -48,7 +48,7 @@ const columns: GridColDef<EventModel>[] = [
         <div><div className={styles.supplierTitle}>{row.recorded_by?.name}</div><div className={styles.supplierDes}>{row.recorded_by?.description}</div></div>
       </div>),
     sortable: false,
-    width: 200
+    flex: 2
   }
 ];
 
@@ -171,6 +171,7 @@ const Index = () => {
       </Box>
 
       <Table
+        classes={{ row: styles.row }}
         onRowClick={handleRowClick}
         loading={loading}
         rows={data}
