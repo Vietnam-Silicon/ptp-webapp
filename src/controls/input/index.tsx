@@ -1,13 +1,31 @@
 import { FormControl, InputLabel, OutlinedInput, OutlinedInputProps } from '@mui/material';
-import { FC } from 'react';
+import { debounce } from 'lodash-es';
+import { FC, useEffect, useMemo, useState } from 'react';
 
-const OutlineInput: FC<OutlinedInputProps> = (props) => {
+const DEBOUNCE_TIME = 500
+
+const OutlineInput: FC<OutlinedInputProps> = ({ size, ...props }) => {
   return (
     <FormControl fullWidth>
-      <InputLabel htmlFor={props.id}>{props.label}</InputLabel>
-      <OutlinedInput id={props.id} {...props} />
+      <InputLabel size={size === 'medium' ? 'normal' : 'small'} htmlFor={props.id}>{props.label}</InputLabel>
+      <OutlinedInput size={size} id={props.id} {...props} />
     </FormControl>
   );
 };
 
-export { OutlineInput as Input };
+const DebounceInput: FC<OutlinedInputProps> = ({ value, defaultValue, onChange, ...props }) => {
+  const [displayValue, setDisplayValue] = useState(defaultValue ?? value)
+  const debounceChange = useMemo(() => debounce((event) => onChange?.(event), DEBOUNCE_TIME), [onChange])
+
+  const handleChange = ((event: React.ChangeEvent<HTMLInputElement>) => {
+    setDisplayValue(event.target.value)
+    debounceChange(event)
+  })
+
+  useEffect(() => {
+    setDisplayValue(value)
+  }, [value])
+  return <OutlineInput value={displayValue} onChange={handleChange} {...props} />
+}
+
+export { OutlineInput as Input, DebounceInput };

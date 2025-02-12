@@ -15,6 +15,7 @@ const eslintConfig = [
     rules: {
       '@typescript-eslint/no-explicit-any': 'warn',
       'no-console': 'warn',
+      'quotes': ['error', 'single'],
     },
   },
 ];
