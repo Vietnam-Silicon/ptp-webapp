@@ -1,15 +1,14 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import { Box, Card, CardContent, Typography } from '@mui/material';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 
 interface InfoCardProps {
   title: string;
   description: string;
-  code: string;
+  customDescription?: ReactNode;
 }
 
-export const InfoCard: FC<InfoCardProps> = ({ title, description, code }) => {
+export const InfoCard: FC<InfoCardProps> = ({ title, description, customDescription }) => {
   return (
     <Card
       sx={{
@@ -30,12 +29,7 @@ export const InfoCard: FC<InfoCardProps> = ({ title, description, code }) => {
           <Typography component="p" fontSize="12px" sx={{ color: 'text.secondary' }}>
             {description}
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', pt: '8px' }}>
-            <LocalShippingIcon sx={{ width: '28px', height: '28px' }} />
-            <Typography component="p" fontSize="12px" ml="8px">
-              {code}
-            </Typography>
-          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', pt: '8px' }}>{customDescription}</Box>
         </CardContent>
       </Box>
     </Card>

@@ -3,7 +3,6 @@
 import { Box, Button, Typography } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
 import { useParams, useRouter } from 'next/navigation';
-import { UserRoleEnum } from 'body/login/constants';
 
 export const Successful = () => {
   const params = useParams<{ userRole?: string }>();
@@ -11,9 +10,7 @@ export const Successful = () => {
   const router = useRouter();
 
   const onNavigate = () => {
-    if (params.userRole === UserRoleEnum.Transportation) {
-      router.push(`/home/${UserRoleEnum.Transportation}`);
-    }
+    router.push(`/home/${params.userRole}`);
   };
 
   return (
