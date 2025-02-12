@@ -51,4 +51,4 @@ const MapProvider = ({ children }: MapProviderProps) => {
   );
 };
 
-export { MapContext, MapProvider }
+export { MapContext, MapProvider };

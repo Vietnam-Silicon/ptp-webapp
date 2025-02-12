@@ -3,7 +3,7 @@ export type ParentNode = {
   related_WorkflowNodes_id: number;
   WorkflowNodes_id: number;
   link_text: string | null;
-}
+};
 
 export type NodeResponse = {
   id: number;
@@ -36,4 +36,4 @@ export type ReturnData = {
     };
     nodes: NodeResponse[];
   };
-}
+};
