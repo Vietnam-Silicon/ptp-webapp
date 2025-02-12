@@ -1,7 +1,3 @@
-const Index = (props: any) => {
-  return (
-    <button {...props}>{props.children || props.text}</button>
-  )
-}
+import { Button } from '@mui/material';
 
-export default Index;
+export { Button };

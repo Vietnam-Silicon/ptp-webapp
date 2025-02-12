@@ -12,17 +12,16 @@ export const TransportationDetail = () => {
   const params = useParams<{ id?: string }>();
   const route = useRouter();
   const [showScanModal, setShowScanModal] = useState(false);
-  const [scanData, setScanData] = useState<string>();
 
   const onScan = (value?: string) => {
-    setScanData(value);
     if (value) {
-      goNextPage();
+      goNextPage(value);
+      setShowScanModal(false);
     }
   };
 
-  const goNextPage = () => {
-    const pathName = `/transport/${params.id}/input-info`;
+  const goNextPage = (value: string) => {
+    const pathName = `/transport/${params.id}/input-info/?scanId=${value}`;
     route.push(pathName);
   };
 
@@ -86,7 +85,6 @@ export const TransportationDetail = () => {
             <Typography component="p">Durian</Typography>
           </Box>
         </Box>
-        {scanData && <Typography component="p">{scanData}</Typography>}
         <Button
           onClick={() => setShowScanModal(true)}
           variant="contained"
@@ -97,7 +95,7 @@ export const TransportationDetail = () => {
           Scan
         </Button>
       </Box>
-      <ScanModal onScan={onScan} onClose={() => setShowScanModal(false)} open={showScanModal} />
+      <ScanModal onScan={onScan} open={showScanModal} />
     </>
   );
 };
