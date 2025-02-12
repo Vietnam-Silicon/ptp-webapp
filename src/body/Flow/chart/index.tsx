@@ -41,7 +41,6 @@ const LayoutFlow: FC = () => {
   }, [data]);
 
   const getConfig = (_e: React.MouseEvent, node: any) => {
-
     setConfig({
       ...config,
       [node.id]: node.position,

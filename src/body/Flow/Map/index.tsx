@@ -1,7 +1,8 @@
 'use client';
 
-import Script from 'next/script';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
+
+import { MapContext } from '../MapContext';
 
 declare global {
   interface Window {
@@ -10,24 +11,85 @@ declare global {
   }
 }
 
+// TODO: it's stupid, yet it works for POC
+(() => {
+  if (typeof window !== 'undefined') {
+    setTimeout(() => {
+      const script = document.createElement('script');
+      script.src = 'https://maps.googleapis.com/maps/api/js?v=3&sensor=false&libraries=geometry&callback=initMap&loading=async';
+      document.head.appendChild(script);
+    }, 1000);
+  }
+})()
+
 const Index = () => {
+  const { data = [] } = useContext(MapContext) || {};
 
   const initMap = () => {
+
+    // draw markers
+    const markerData = data.map((item: any) => ({ lat: item.position_latitude, lng: item.position_longitude }));
+    const center = markerData.reduce(
+      (acc: any, coord: any) => ({
+        lat: acc.lat + coord.lat,
+        lng: acc.lng + coord.lng,
+      }),
+      { lat: 0, lng: 0 }
+    );
+
     const map = new window.google.maps.Map(document.getElementById("map_div"), {
-      center: { lat: 14.8458754, lng: 101.9391654 },
-      zoom: 8, // Closer zoom for a detailed view
+      center: { lat: center.lat / markerData.length, lng: center.lng / markerData.length },
+      zoom: 7,
     });
 
-    const pointGroup = [
-      [{ lat: 15.1621573, lng: 99.8708099 }, { lat: 14.5723432, lng: 99.4495777 }],
-      [{ lat: 15.1621573, lng: 99.8708099 }, { lat: 15.2005259, lng: 100.2527648 }],
-      [{ lat: 15.1621573, lng: 99.8708099 }, { lat: 16.2471285, lng: 100.5556779 }],
-      [{ lat: 14.5723432, lng: 99.4495777 }, { lat: 14.963241, lng: 101.437353 }],
-      [{ lat: 15.2005259, lng: 100.2527648 }, { lat: 14.963241, lng: 101.437353 }],
-      [{ lat: 16.2471285, lng: 100.5556779 }, { lat: 14.963241, lng: 101.437353 }],
-      [{ lat: 14.963241, lng: 101.437353 }, { lat: 14.2381739, lng: 103.1152752 }],
-    ];
-    for (let point of pointGroup) {
+    markerData.forEach((item: any) => {
+      const marker = new window.google.maps.Marker({
+        position: new window.google.maps.LatLng(item.lat, item.lng),
+        title: `# ${JSON.stringify(item)}`,
+        map: map,
+        animation: window.google.maps.Animation.DROP
+      });
+      window.google.maps.event.addListener(marker, 'click', () => {
+        console.log(item);
+      });
+    });
+
+    // draw lines
+    const linkMiniData = data.reduce((result: any, item: any) => {
+      const {
+        id,
+        bind_to_workflow_node = {},
+        position_latitude,
+        position_longitude,
+      } = item;
+      const { id: nodeId, parent_nodes = [] } = bind_to_workflow_node;
+
+      if (!result.some((i: any) => i.nodeId === nodeId)) {
+        result.push({
+          eventId: id,
+          nodeId,
+          parentNodes: parent_nodes,
+          positionLatitude: position_latitude,
+          positionLongitude: position_longitude,
+        });
+      }
+      return result;
+    }, []);
+
+    // debugger
+
+    const linkData = linkMiniData.reduce((arr: any, item: any) => {
+      const parentData = linkMiniData.filter((link: any) => item.parentNodes.indexOf(link.nodeId) >= 0);
+
+      const mapPoints = parentData.map((node: any) => ([
+        { lat: item.positionLatitude, lng: item.positionLongitude },
+        { lat: node.positionLatitude, lng: node.positionLongitude },
+      ]));
+
+      return arr.concat(mapPoints);
+    }, []);
+
+    for (let point of linkData) {
       const [coordStart, coordEnd] = point;
 
       const start = new window.google.maps.LatLng(coordStart.lat, coordStart.lng);
@@ -57,37 +119,13 @@ const Index = () => {
 
       curvePath.setMap(map);
     }
-
-    [
-      { lat: 15.1621573, lng: 99.8708099 },
-      { lat: 14.5723432, lng: 99.4495777 },
-      { lat: 15.2005259, lng: 100.2527648 },
-      { lat: 16.2471285, lng: 100.5556779 },
-      { lat: 14.963241, lng: 101.437353 },
-      { lat: 14.2381739, lng: 103.1152752 },
-    ].forEach(item => {
-      const marker = new window.google.maps.Marker({
-        position: new window.google.maps.LatLng(item.lat, item.lng),
-        title: `# ${JSON.stringify(item)}`,
-        map: map,
-        animation: window.google.maps.Animation.DROP
-      });
-      window.google.maps.event.addListener(marker, 'click', () => {
-        console.log(item);
-      });
-    })
   };
 
   useEffect(() => {
     window.initMap = initMap;
   }, [])
 
-  return (
-    <>
-      <Script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false&libraries=geometry&callback=initMap&loading=async" />
-      <div id="map_div" style={{ height: 400 }}></div>
-    </>
-  );
+  return <div id="map_div" style={{ height: 400 }}></div>;
 };
 
 export default Index;
