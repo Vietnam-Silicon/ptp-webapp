@@ -23,7 +23,7 @@ interface FlowProdiverProps {
   children: ReactNode;
 }
 
-const FlowContext = createContext<FlowContextType | undefined>({
+const FlowContext = createContext<FlowContextType>({
   currentId: '',
   loading: false,
   data: {},

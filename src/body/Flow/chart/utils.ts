@@ -14,7 +14,7 @@ export const transform = (nodes: NodeResponse[] = [], currentId: string, chartCo
     initialNodes: Node[];
     initialEdges: Edge[];
   }, item: NodeResponse) => {
-    const { parent_nodes } = item;
+    const { parent_nodes = [] } = item;
 
     result.initialNodes.push({
       id: `${item.id}`,

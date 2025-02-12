@@ -1,4 +1,4 @@
-export const safeJSONParse = <T extends object>(json: string | null | undefined): T | Record<string, never> => {
+export const safeJSONParse = <T extends object>(json: string | null | undefined): any => {
   if (!json) {
     return {};
   }
