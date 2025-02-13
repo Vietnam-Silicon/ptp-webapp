@@ -12,25 +12,25 @@ import { getAsset } from 'unknown/domainConfig';
 
 import styles from './styles.module.css';
 import useEvents from './useEvents';
-import { EventModel } from './index.d';
 import useFilter from './useFilter';
+import { EventType } from 'types/Event';
 
 const DATE_FORMAT = 'MMM DD,YYYY hh:mm'
-const columns: GridColDef<EventModel>[] = [
+const columns: GridColDef<EventType>[] = [
   { field: 'unique_code', headerName: 'Patch/Lot', flex: 1 },
-  { field: 'event_time', headerName: 'Event Time', renderCell: ({ row }) => dayjs(row.event_time).format(DATE_FORMAT), flex: 1 },
-  { field: 'location', renderCell: ({ row }) => row.recorded_by?.address, headerName: 'Location', flex: 1 },
+  { field: 'event_time', headerName: 'Event Time', renderCell: ({ row }) => dayjs(row.eventTime).format(DATE_FORMAT), flex: 1 },
+  { field: 'location', renderCell: ({ row }) => row.recordedBy?.address, headerName: 'Location', flex: 1 },
   { field: 'type', headerName: 'Type', renderCell: ({ row }) => row.metadata?.length ? row.metadata[0].collection : null, flex: 1 },
   {
     display: 'flex',
     field: 'product', headerName: 'Product', renderCell: ({ row }) => (
       <div className={styles.product}>
-        {row.main_product?.primary_image?.filename_disk ?
-          <Image src={getAsset(row.main_product.primary_image.filename_disk)} alt='' width={32} height={32} />
+        {row.mainProduct?.primaryImage?.filenameDisk ?
+          <Image src={getAsset(row.mainProduct.primaryImage.filenameDisk)} alt='' width={32} height={32} />
           :
           <Image src='./product-empty.svg' alt='' width={32} height={32} />
         }
-        <div><div className={styles.productTitle}>{row.main_product?.name}</div><div className={styles.productDes}>{row.main_product?.description}</div></div>
+        <div><div className={styles.productTitle}>{row.mainProduct?.name}</div><div className={styles.productDes}>{row.mainProduct?.description}</div></div>
       </div>),
     sortable: false,
     flex: 2
@@ -40,12 +40,12 @@ const columns: GridColDef<EventModel>[] = [
     display: 'flex',
     field: 'supplier', headerName: 'Suppliers', renderCell: ({ row }) => (
       <div className={styles.supplier}>
-        {row.recorded_by?.logo?.filename_disk ?
-          <Image src={getAsset(row.recorded_by.logo.filename_disk)} alt='' width={32} height={32} />
+        {row.recordedBy?.logo?.filenameDisk ?
+          <Image src={getAsset(row.recordedBy.logo.filenameDisk)} alt='' width={32} height={32} />
           :
           <Image src='./supplier-empty.svg' alt='' width={32} height={32} />
         }
-        <div><div className={styles.supplierTitle}>{row.recorded_by?.name}</div><div className={styles.supplierDes}>{row.recorded_by?.description}</div></div>
+        <div><div className={styles.supplierTitle}>{row.recordedBy?.name}</div><div className={styles.supplierDes}>{row.recordedBy?.description}</div></div>
       </div>),
     sortable: false,
     flex: 2
@@ -69,7 +69,7 @@ const Index = () => {
   const { filter, handleChange } = useFilter()
 
   const data = useMemo(() => {
-    const filteredData: EventModel[] = []
+    const filteredData: EventType[] = []
     rawData.forEach((item) => {
       let valid = true
 
@@ -82,14 +82,14 @@ const Index = () => {
 
       // check start date
       if (filter.startDate) {
-        if (!item.event_time || dayjs(item.event_time).isBefore(filter.startDate)) {
+        if (!item.eventTime || dayjs(item.eventTime).isBefore(filter.startDate)) {
           valid = false
         }
       }
 
       // check end date
       if (filter.endDate) {
-        if (!item.event_time || dayjs(item.event_time).isAfter(filter.endDate)) {
+        if (!item.eventTime || dayjs(item.eventTime).isAfter(filter.endDate)) {
           valid = false
         }
       }
@@ -124,8 +124,8 @@ const Index = () => {
     return res
   }, [rawData])
 
-  const handleRowClick = ({ row }: GridRowParams<EventModel>) => {
-    router.push(`/flow/${row.bind_to_workflow_node?.id}/${row.trace_id}`)
+  const handleRowClick = ({ row }: GridRowParams<EventType>) => {
+    router.push(`/flow/${row.bindToWorkflowNode?.id}/${row.traceId}`)
   };
 
   return (
