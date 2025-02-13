@@ -2,7 +2,7 @@ export enum UserRoleEnum {
   Farmer = '1',
   LogisticTruckFarm = '2',
   AggregatorReceiving = '3',
-  AggregatorPacking = '4',
+  AggregatorPackaging = '4',
   LogisticsTruckContainer = '5',
   ExportCustoms = '6',
   ImportCustom = '7',
@@ -28,5 +28,9 @@ export const UserRoles = [
   {
     label: 'Logistics (Truck Container)',
     value: UserRoleEnum.LogisticsTruckContainer,
+  },
+  {
+    label: 'Aggregator (Packaging)',
+    value: UserRoleEnum.AggregatorPackaging,
   },
 ];

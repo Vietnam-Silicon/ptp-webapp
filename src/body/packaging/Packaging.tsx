@@ -1,56 +1,47 @@
 'use client';
 
 import { FC, useState } from 'react';
-import { useRouter } from 'next/navigation';
 
-import { InfoCard, PieChart, ScanModal, Typography, Box, BarChart } from 'components';
-import { AddOutlined as AddOutlinedIcon, LocationOn } from 'components/Icons';
+import {
+  InfoCard,
+  ScanModal,
+  Typography,
+  Box,
+  SwipeableDrawer,
+  ListItemText,
+  MenuItem,
+  MenuList,
+} from 'components';
+import { AddOutlined as AddOutlinedIcon, ArrowRight, LocationOn } from 'components/Icons';
 import { Button } from 'controls';
+import { pgInputInfoRoute } from 'routes/packaging';
+import useUpdateQueryParam from 'hooks/useUpdateQueyParam';
 
-const SampleChartData = [
-  {
-    name: 'Kan Yau',
-    value: 30,
-  },
-  {
-    name: 'Kradum-thong',
-    value: 20,
-  },
-  {
-    name: 'Chaduri',
-    value: 40,
-  },
-  {
-    name: 'Chanee',
-    value: 40,
-  },
-];
+enum EScanType {
+  Box = 1,
+  Pallet = 2,
+  Container = 3,
+}
 
-const SampleBarChartData = [
-  {
-    name: 'F1',
-    value: 16,
-  },
-  {
-    name: 'F2',
-    value: 5,
-  },
-  {
-    name: 'F3',
-    value: 7,
-  },
-  {
-    name: 'F4',
-    value: 16,
-  },
-];
-
-export const Receiving: FC = () => {
+export const Packaging: FC = () => {
   const [showScanModal, setShowScanModal] = useState(false);
-  const route = useRouter();
+  const [showDrawer, setShowDrawer] = useState(false);
+  const [scanType, setShowScanType] = useState<EScanType>();
+  const updateQueyParam = useUpdateQueryParam();
+
+  const menuItems = [
+    { label: 'Box', value: EScanType.Box },
+    { label: 'Pallet', value: EScanType.Pallet },
+    { label: 'Container', value: EScanType.Container },
+  ];
 
   const onCloseModal = () => {
     setShowScanModal(false);
+  };
+
+  const onClickItem = (value: EScanType) => {
+    setShowScanType(value);
+    setShowScanModal(true);
   };
 
   const onScan = (value?: string) => {
@@ -60,8 +51,14 @@ export const Receiving: FC = () => {
   };
 
   const goNextPage = (value: string) => {
-    const pathName = `/receiving/?cratedId=${value}`;
-    route.push(pathName);
+    switch (scanType) {
+      case EScanType.Box:
+        updateQueyParam('cratedId', value, pgInputInfoRoute);
+        break;
+
+      default:
+        break;
+    }
   };
 
   return (
@@ -84,37 +81,7 @@ export const Receiving: FC = () => {
             </Box>
           }
         />
-
-        <Box
-          component="div"
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100%',
-            borderRadius: '12px',
-            border: '1px solid #eeeeee',
-            minWidth: '100px',
-          }}
-        >
-          <BarChart data={SampleBarChartData} />
-        </Box>
-        <Box
-          component="div"
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100%',
-            borderRadius: '12px',
-            border: '1px solid #eeeeee',
-            minWidth: '100px',
-          }}
-        >
-          <PieChart data={SampleChartData} />
-        </Box>
       </Box>
-
       <Box
         sx={{
           position: 'fixed',
@@ -127,15 +94,25 @@ export const Receiving: FC = () => {
         }}
       >
         <Button
-          onClick={() => setShowScanModal(true)}
+          onClick={() => setShowDrawer(true)}
           startIcon={<AddOutlinedIcon />}
           variant="contained"
           sx={{ backgroundColor: '#eeeeee', color: 'black', height: '56px', borderRadius: '16px' }}
         >
-          Scan to review
+          Scan
         </Button>
       </Box>
       <ScanModal onScan={onScan} open={showScanModal} onClose={onCloseModal} />
+      <SwipeableDrawer toggleDrawer={setShowDrawer} open={showDrawer}>
+        <MenuList sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          {menuItems.map((it) => (
+            <MenuItem key={it.value} onClick={() => onClickItem(it.value)}>
+              <ListItemText>{it.label}</ListItemText>
+              <ArrowRight />
+            </MenuItem>
+          ))}
+        </MenuList>
+      </SwipeableDrawer>
     </>
   );
 };

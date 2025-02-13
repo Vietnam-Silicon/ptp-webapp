@@ -4,7 +4,9 @@ import {
   AddOutlined,
   LegendToggle,
   LocalShipping,
-  Done
+  Done,
+  LocationOn,
+  ArrowRight,
 } from '@mui/icons-material';
 
 export {
@@ -14,4 +16,6 @@ export {
   LegendToggle,
   LocalShipping,
   Done,
+  LocationOn,
+  ArrowRight,
 };

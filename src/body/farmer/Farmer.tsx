@@ -45,7 +45,7 @@ export const Farmer: FC = () => {
   };
 
   const goNextPage = (value: string) => {
-    const pathName = `/farmer/?scanId=${value}`;
+    const pathName = `/farmer/?cratedId=${value}`;
     route.push(pathName);
   };
 

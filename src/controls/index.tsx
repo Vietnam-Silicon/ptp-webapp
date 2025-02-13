@@ -5,6 +5,7 @@ import { DatePicker } from './DatePicker';
 import { TimePicker } from './TimePicker';
 import { Dropdown } from './Dropdown';
 import { Button } from './Button';
+import { CameraForm } from './CameraForm';
 
 export {
   Input,
@@ -16,4 +17,5 @@ export {
   Select,
   MenuItem,
   Image,
+  CameraForm,
 };

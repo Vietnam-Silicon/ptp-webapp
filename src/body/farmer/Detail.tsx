@@ -38,7 +38,7 @@ export const FarmerDetail = () => {
   const searchParam = useSearchParams();
   const router = useRouter();
   const [formState, setFormState] = useState<Partial<HarvestingInformationType>>();
-  const scanId = searchParam.get('scanId') ?? '';
+  const cratedId = searchParam.get('cratedId') ?? '';
 
   const onChangeForm = (key: keyof HarvestingInformationType, value?: string) => {
     setFormState((prevState) => ({ ...prevState, [key]: value }));
@@ -81,7 +81,7 @@ export const FarmerDetail = () => {
       <NavigationBack content="Durian receiving information" onBack={onGoBack} />
       <According title="Detailed information" data={SampleData} />
       <Box
-        id={scanId}
+        id={cratedId}
         component="form"
         mt="8px"
         onSubmit={onSubmit}

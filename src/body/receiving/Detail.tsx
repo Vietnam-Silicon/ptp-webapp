@@ -66,11 +66,11 @@ const SampleData: AccordingData = [
   },
 ];
 
-export const ReceivingDetail = () => {
+export const CrateDetail = () => {
   const searchParam = useSearchParams();
   const router = useRouter();
   const [formState, setFormState] = useState<Partial<ReceivingInformationType>>();
-  const scanId = searchParam.get('scanId') ?? '';
+  const cratedId = searchParam.get('cratedId') ?? '';
 
   const onChangeForm = (key: keyof ReceivingInformationType, value?: string) => {
     setFormState((prevState) => ({ ...prevState, [key]: value }));
@@ -114,7 +114,7 @@ export const ReceivingDetail = () => {
       <NavigationBack content="Durian receiving information" onBack={onGoBack} />
       <According title="Detailed information" data={SampleData} />
       <Box
-        id={scanId}
+        id={cratedId}
         component="form"
         mt="8px"
         onSubmit={onSubmit}

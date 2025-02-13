@@ -23,7 +23,7 @@ export const TransportationDetail = () => {
   };
 
   const goNextPage = (value: string) => {
-    const pathName = `/transport/${params.id}/input-info/?scanId=${value}`;
+    const pathName = `/transport/${params.id}/input-info/?cratedId=${value}`;
     route.push(pathName);
   };
 

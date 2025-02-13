@@ -147,7 +147,7 @@ export const InputInfo: FC = () => {
             name="startDate"
             sx={{ width: '100%' }}
             label="Start date"
-            onChange={(value) => onChangeForm('moisture', value?.toISOString())}
+            onChange={(value) => onChangeForm('startDate', value?.toISOString())}
           />
           <TimePicker
             name="startTime"
