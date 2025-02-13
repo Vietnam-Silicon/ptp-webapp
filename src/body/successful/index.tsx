@@ -1,8 +1,9 @@
 'use client';
-
-import { Box, Button, Typography } from '@mui/material';
-import DoneIcon from '@mui/icons-material/Done';
 import { useParams, useRouter } from 'next/navigation';
+
+import { Done as DoneIcon } from 'components/Icons';
+import { Box, Typography } from 'components';
+import { Button } from 'controls';
 
 export const Successful = () => {
   const params = useParams<{ userRole?: string }>();

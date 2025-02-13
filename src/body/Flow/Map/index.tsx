@@ -16,7 +16,8 @@ declare global {
   if (typeof window !== 'undefined') {
     setTimeout(() => {
       const script = document.createElement('script');
-      script.src = 'https://maps.googleapis.com/maps/api/js?v=3&sensor=false&libraries=geometry&callback=initMap&loading=async';
+      // script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&v=3&sensor=false&libraries=geometry&callback=initMap&loading=async';
+      script.src = 'https://cdn.jsdelivr.net/gh/somanchiu/Keyless-Google-Maps-API@v6.8/mapsJavaScriptAPI.js';
       document.head.appendChild(script);
     }, 1000);
   }

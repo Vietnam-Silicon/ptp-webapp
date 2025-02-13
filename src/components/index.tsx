@@ -10,6 +10,7 @@ import { Box } from './Box';
 import { Typography } from './Typography';
 import type { GridColDef, GridRowParams } from './Table';
 import Table from './Table';
+import CircularProgress from './CircularProgress';
 
 import { Menu, MenuItem } from './Menu';
 import { BarChart } from './BarChart';
@@ -29,5 +30,6 @@ export {
   Menu,
   MenuItem,
   BarChart,
+  CircularProgress,
 };
 export type { GridColDef, GridRowParams };
