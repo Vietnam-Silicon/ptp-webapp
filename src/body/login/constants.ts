@@ -25,4 +25,8 @@ export const UserRoles = [
     label: 'Aggregator (Receiving)',
     value: UserRoleEnum.AggregatorReceiving,
   },
+  {
+    label: 'Logistics (Truck Container)',
+    value: UserRoleEnum.LogisticsTruckContainer,
+  },
 ];

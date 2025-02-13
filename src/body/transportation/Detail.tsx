@@ -1,10 +1,9 @@
 'use client';
 import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Box, Button, Typography } from '@mui/material';
 
-import { TransportCard } from 'components';
-import { ScanModal } from 'components/ScanModal';
+import { Box, Typography, TransportCard, ScanModal } from 'components';
+import { Button } from 'controls';
 
 import { SampleData } from './Transportation';
 

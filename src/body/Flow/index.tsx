@@ -1,7 +1,8 @@
 'use client';
 
 import { useContext } from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
+
+import { CircularProgress } from 'components';
 
 import { FlowContext, FlowProdiver } from './FlowContext';
 import { MapContext, MapProvider } from './MapContext';

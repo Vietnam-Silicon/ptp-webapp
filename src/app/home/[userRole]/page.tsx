@@ -2,8 +2,6 @@
 
 import { Home } from 'body/home';
 
-const Index = () => {
-  return <Home />;
-};
+const Index = () => <Home />;
 
 export default Index;

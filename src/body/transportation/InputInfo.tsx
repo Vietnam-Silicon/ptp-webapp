@@ -1,7 +1,7 @@
 'use client';
 import { FC, useState } from 'react';
 
-import { Box, Button } from '@mui/material';
+import { Box, Button } from 'components';
 import { useRouter } from 'next/navigation';
 import { get } from 'lodash-es';
 

@@ -9,6 +9,7 @@ import { UserRoleEnum, UserRoles } from 'body/login/constants';
 import { Transportation } from 'body/transportation/Transportation';
 import { Farmer } from 'body/farmer/Farmer';
 import { Receiving } from 'body/receiving/Receiving';
+import { Container } from 'body/container/Container';
 
 import styles from './home.module.css';
 
@@ -28,6 +29,7 @@ export const Home: FC = () => {
     [UserRoleEnum.LogisticTruckFarm, <Transportation key={UserRoleEnum.LogisticTruckFarm} />],
     [UserRoleEnum.Farmer, <Farmer key={UserRoleEnum.Farmer} />],
     [UserRoleEnum.AggregatorReceiving, <Receiving key={UserRoleEnum.AggregatorReceiving} />],
+    [UserRoleEnum.LogisticsTruckContainer, <Container key={UserRoleEnum.LogisticsTruckContainer} />],
   ]);
 
   if (!user) {
