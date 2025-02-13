@@ -3,12 +3,8 @@
 import { FC, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { InfoCard, GeneralInformation, PieChart, ScanModal, Typography, Box } from 'components';
-import {
-  WbSunny as WbSunnyIcon,
-  WaterDropSharp as WaterDropSharpIcon,
-  AddOutlined as AddOutlinedIcon,
-} from 'components/Icons';
+import { InfoCard, PieChart, ScanModal, Typography, Box, BarChart } from 'components';
+import { WbSunny as WbSunnyIcon, AddOutlined as AddOutlinedIcon } from 'components/Icons';
 import { Button } from 'controls';
 
 const SampleChartData = [
@@ -30,9 +26,32 @@ const SampleChartData = [
   },
 ];
 
-export const Farmer: FC = () => {
+const SampleBarChartData = [
+  {
+    name: 'F1',
+    value: 16,
+  },
+  {
+    name: 'F2',
+    value: 5,
+  },
+  {
+    name: 'F3',
+    value: 7,
+  },
+  {
+    name: 'F4',
+    value: 16,
+  },
+];
+
+export const Receiving: FC = () => {
   const [showScanModal, setShowScanModal] = useState(false);
   const route = useRouter();
+
+  const onCloseModal = () => {
+    setShowScanModal(false);
+  };
 
   const onScan = (value?: string) => {
     if (value) {
@@ -40,12 +59,8 @@ export const Farmer: FC = () => {
     }
   };
 
-  const onCloseModal = () => {
-    setShowScanModal(false);
-  };
-
   const goNextPage = (value: string) => {
-    const pathName = `/farmer/?scanId=${value}`;
+    const pathName = `/receiving/?scanId=${value}`;
     route.push(pathName);
   };
 
@@ -53,7 +68,7 @@ export const Farmer: FC = () => {
     <>
       <Box
         component="div"
-        sx={{ display: 'flex', flexDirection: 'column', gap: '16px', minHeight: '550px' }}
+        sx={{ display: 'flex', flexDirection: 'column', gap: '16px', minHeight: '800px' }}
       >
         <InfoCard
           title="Nonthaburi Durian"
@@ -66,20 +81,25 @@ export const Farmer: FC = () => {
                   31 °C
                 </Typography>
               </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <WaterDropSharpIcon />
-                <Typography component="p" fontSize="12px" ml="8px">
-                  80 %
-                </Typography>
-              </Box>
             </Box>
           }
         />
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', gap: '16px' }}>
-          <GeneralInformation title="30" content="Harvested last season" description="tons" />
-          <GeneralInformation title="95" content="AA-grade" description="percent" />
-        </Box>
 
+        <Box
+          component="div"
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+            height: '300px',
+            borderRadius: '12px',
+            border: '1px solid #eeeeee',
+            minWidth: '100px',
+          }}
+        >
+          <BarChart data={SampleBarChartData} />
+        </Box>
         <Box
           component="div"
           sx={{
@@ -106,6 +126,7 @@ export const Farmer: FC = () => {
           display: 'flex',
           justifyContent: 'center',
           zIndex: 2,
+          mt: '80px',
         }}
       >
         <Button
@@ -114,7 +135,7 @@ export const Farmer: FC = () => {
           variant="contained"
           sx={{ backgroundColor: '#eeeeee', color: 'black', height: '56px', borderRadius: '16px' }}
         >
-          Create new batch
+          Scan to review
         </Button>
       </Box>
       <ScanModal onScan={onScan} open={showScanModal} onClose={onCloseModal} />

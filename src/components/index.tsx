@@ -8,8 +8,11 @@ import { GeneralInformation } from './GeneralInformation';
 import { PieChart } from './PieChart';
 import { Box } from './Box';
 import { Typography } from './Typography';
-import type { GridColDef, GridRowParams } from './Table'
-import Table from './Table'
+import type { GridColDef, GridRowParams } from './Table';
+import Table from './Table';
+
+import { Menu, MenuItem } from './Menu';
+import { BarChart } from './BarChart';
 
 export {
   InfoCard,
@@ -22,6 +25,9 @@ export {
   PieChart,
   Box,
   Typography,
-  Table
+  Table,
+  Menu,
+  MenuItem,
+  BarChart,
 };
-export type { GridColDef, GridRowParams }
+export type { GridColDef, GridRowParams };

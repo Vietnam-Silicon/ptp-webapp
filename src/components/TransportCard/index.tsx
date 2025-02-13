@@ -2,6 +2,7 @@
 
 import { FC } from 'react';
 import { Box, Card, Typography } from '@mui/material';
+
 import ForestIcon from '@mui/icons-material/Forest';
 import FactoryIcon from '@mui/icons-material/Factory';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
