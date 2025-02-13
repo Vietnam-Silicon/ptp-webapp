@@ -49,7 +49,7 @@ export const ScanModal = (props: ScanModalProps) => {
       >
         <Box>
           <Typography fontSize="20px" align="center" sx={{ color: '#fff' }} mb="8px">
-            Scan the QR/barcode
+            Scan crate QR code
           </Typography>
           <Box
             sx={{

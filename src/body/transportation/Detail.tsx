@@ -13,10 +13,13 @@ export const TransportationDetail = () => {
   const route = useRouter();
   const [showScanModal, setShowScanModal] = useState(false);
 
+  const onCloseModal = () => {
+    setShowScanModal(false);
+  };
+
   const onScan = (value?: string) => {
     if (value) {
       goNextPage(value);
-      setShowScanModal(false);
     }
   };
 
@@ -95,7 +98,7 @@ export const TransportationDetail = () => {
           Scan
         </Button>
       </Box>
-      <ScanModal onScan={onScan} open={showScanModal} />
+      <ScanModal onScan={onScan} open={showScanModal} onClose={onCloseModal} />
     </>
   );
 };

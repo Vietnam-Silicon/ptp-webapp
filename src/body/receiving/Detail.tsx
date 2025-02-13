@@ -1,15 +1,13 @@
 'use client';
-import { FC, useState } from 'react';
-
-import { Box, Button } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { get } from 'lodash-es';
 
-import { DatePicker, Input, TimePicker } from 'controls';
-import { NavigationBack, According } from 'components';
-import type { AccordingData } from 'components/According';
-import { TransportingInformationType } from 'types/Transportation';
+import { According, NavigationBack, Box } from 'components';
+import { AccordingData } from 'components/According';
+import { Input, Button } from 'controls';
 import { UserRoleEnum } from 'body/login/constants';
+import { ReceivingInformationType } from 'types/Receiving';
 
 const SampleData: AccordingData = [
   {
@@ -17,7 +15,7 @@ const SampleData: AccordingData = [
     content: 'BL899KGHJA',
   },
   {
-    label: 'crates ID',
+    label: 'Crates ID',
     content: 'CR79071',
   },
   {
@@ -26,7 +24,7 @@ const SampleData: AccordingData = [
   },
   {
     label: 'Total weight (kg)',
-    content: '2000',
+    content: '2,000',
   },
   {
     label: 'Quantity',
@@ -53,13 +51,28 @@ const SampleData: AccordingData = [
     label: 'Driver',
     content: 'Driver name',
   },
+  {
+    label: 'Manufacture',
+    content: 'Nonthaburi Durian',
+    description: 'North of Chanthaburi City on Hwy 317',
+  },
+  {
+    label: 'Manufacture GLN',
+    content: '775674899644789',
+  },
+  {
+    label: 'Receiving time',
+    content: new Date().toISOString(),
+  },
 ];
 
-export const InputInfo: FC = () => {
+export const ReceivingDetail = () => {
+  const searchParam = useSearchParams();
   const router = useRouter();
-  const [formState, setFormState] = useState<Partial<TransportingInformationType>>();
+  const [formState, setFormState] = useState<Partial<ReceivingInformationType>>();
+  const scanId = searchParam.get('scanId') ?? '';
 
-  const onChangeForm = (key: keyof TransportingInformationType, value?: string) => {
+  const onChangeForm = (key: keyof ReceivingInformationType, value?: string) => {
     setFormState((prevState) => ({ ...prevState, [key]: value }));
   };
 
@@ -83,7 +96,7 @@ export const InputInfo: FC = () => {
   };
 
   const onSubmit = () => {
-    router.push(`/successful/${UserRoleEnum.LogisticTruckFarm}`);
+    router.push(`/successful/${UserRoleEnum.AggregatorReceiving}`);
   };
 
   return (
@@ -101,6 +114,7 @@ export const InputInfo: FC = () => {
       <NavigationBack content="Durian receiving information" onBack={onGoBack} />
       <According title="Detailed information" data={SampleData} />
       <Box
+        id={scanId}
         component="form"
         mt="8px"
         onSubmit={onSubmit}
@@ -112,6 +126,7 @@ export const InputInfo: FC = () => {
         }}
       >
         <Input
+          sx={{ height: '40px' }}
           id="crates_id"
           name="crates"
           onChange={(event) => onChangeForm('crates', event.target.value)}
@@ -119,66 +134,7 @@ export const InputInfo: FC = () => {
           label="Number of crates"
           placeholder="Enter number of crates"
         />
-        <Input
-          id="temp_id"
-          name="temp"
-          fullWidth
-          label="Temperature (Celsius)"
-          type="number"
-          placeholder="Enter temperature"
-          onChange={(event) => onChangeForm('temp', event.target.value)}
-        />
-        <Input
-          id="moisture_id"
-          name="moisture"
-          fullWidth
-          label="Moisture (%)"
-          placeholder="Enter moisture"
-          type="number"
-          onChange={(event) => onChangeForm('moisture', event.target.value)}
-        />
-        <Box
-          component="div"
-          sx={{
-            display: 'flex',
-            gap: '16px',
-          }}
-        >
-          <DatePicker
-            name="startDate"
-            sx={{ width: '100%' }}
-            label="Start date"
-            onChange={(value) => onChangeForm('moisture', value?.toISOString())}
-          />
-          <TimePicker
-            name="startTime"
-            sx={{ width: '100%' }}
-            label="Start time"
-            onChange={(value) => onChangeForm('startTime', value?.toISOString())}
-          />
-        </Box>
-        <Box
-          component="div"
-          sx={{
-            display: 'flex',
-            gap: '16px',
-          }}
-        >
-          <DatePicker
-            name="arriveDate"
-            sx={{ width: '100%' }}
-            label="Est arrive date"
-            onChange={(value) => onChangeForm('arriveDate', value?.toISOString())}
-          />
-          <TimePicker
-            name="arriveTime"
-            sx={{ width: '100%' }}
-            label="Est arrive time"
-            onChange={(value) => onChangeForm('arriveTime', value?.toISOString())}
-          />
-        </Box>
       </Box>
-
       <Box
         component="div"
         sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}

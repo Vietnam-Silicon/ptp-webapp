@@ -1,19 +1,34 @@
+'use client';
+
 import { FC } from 'react';
-import { Box, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 
+import { Box, Typography } from 'components';
 import { UserRoleEnum, UserRoles } from 'body/login/constants';
-
 import { Transportation } from 'body/transportation/Transportation';
 import { Farmer } from 'body/farmer/Farmer';
+import { Receiving } from 'body/receiving/Receiving';
 
 import styles from './home.module.css';
 
-interface HomeProps {
-  userRole: UserRoleEnum;
-}
+export const Home: FC = () => {
+  const params = useParams();
+  const router = useRouter();
+  const userRole = params.userRole;
 
-export const Home: FC<HomeProps> = ({ userRole }) => {
   const user = UserRoles.find((role) => role.value === userRole);
+
+  if (!user) {
+    router.push('/');
+    return null;
+  }
+
+  const pageMapper = new Map([
+    [UserRoleEnum.LogisticTruckFarm, <Transportation key={UserRoleEnum.LogisticTruckFarm} />],
+    [UserRoleEnum.Farmer, <Farmer key={UserRoleEnum.Farmer} />],
+    [UserRoleEnum.AggregatorReceiving, <Receiving key={UserRoleEnum.AggregatorReceiving} />],
+  ]);
 
   if (!user) {
     return null;
@@ -27,8 +42,7 @@ export const Home: FC<HomeProps> = ({ userRole }) => {
           John Doe
         </Typography>
       </Typography>
-      {user.value === UserRoleEnum.Transportation && <Transportation />}
-      {user.value === UserRoleEnum.Farmer && <Farmer />}
+      {pageMapper.get(user.value)}
     </Box>
   );
 };

@@ -8,6 +8,7 @@ import { AccordingData } from 'components/According';
 import { Input, Dropdown, Button } from 'controls';
 import { HarvestingInformationType } from 'types/Farmer';
 import { UserRoleEnum } from 'body/login/constants';
+import { VarietyDurianData, GradeDurianData } from 'body/constants/durian';
 
 const SampleData: AccordingData = [
   {
@@ -30,17 +31,6 @@ const SampleData: AccordingData = [
   {
     label: 'Harvesting time',
     content: new Date().toISOString(),
-  },
-];
-
-const currencies = [
-  {
-    value: '1',
-    label: 'Type 1',
-  },
-  {
-    value: '2',
-    label: 'Type 2',
   },
 ];
 
@@ -130,20 +120,22 @@ export const FarmerDetail = () => {
         />
 
         <Dropdown
-          id="durianVariety"
-          name="durianVariety"
+          id="variety"
+          name="variety"
           fullWidth
           label="Durian variety"
-          menuItems={currencies}
-          onChange={(event) => onChangeForm('quantity', event.target.value)}
+          value={formState?.variety ?? ''}
+          menuItems={VarietyDurianData}
+          onChange={(event) => onChangeForm('variety', event.target.value)}
         />
         <Dropdown
           id="grade"
-          name="grad"
+          name="grade"
           fullWidth
-          label="Durian variety"
-          menuItems={currencies}
-          onChange={(event) => onChangeForm('quantity', event.target.value)}
+          label="Grade"
+          menuItems={GradeDurianData}
+          value={formState?.grade ?? ''}
+          onChange={(event) => onChangeForm('grade', event.target.value)}
         />
       </Box>
       <Box

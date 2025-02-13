@@ -14,20 +14,6 @@ export const SampleData = [
     toDestination: 'ThaiDuri',
     destinationType: 'Factory',
   },
-  {
-    id: '2',
-    fromDestination: 'Bangkok',
-    product: 'Durian',
-    toDestination: 'ThaiDuri',
-    destinationType: 'Factory',
-  },
-  {
-    id: '3',
-    fromDestination: 'Bangkok',
-    product: 'Durian',
-    toDestination: 'ThaiDuri',
-    destinationType: 'Factory',
-  },
 ];
 
 export const Transportation = () => {

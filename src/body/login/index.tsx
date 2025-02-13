@@ -1,19 +1,13 @@
 'use client';
 
-import { FC, useState } from 'react';
-import {
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Typography,
-} from '@mui/material';
+import { ChangeEvent, FC, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import LegendToggleIcon from '@mui/icons-material/LegendToggle';
+
+import { Box, Typography } from 'components';
+import { Dropdown, Button } from 'controls';
+
+import { LegendToggle as LegendToggleIcon } from 'components/Icons';
 
 import { UserRoles } from './constants';
 
@@ -21,18 +15,30 @@ import styles from './login.module.css';
 
 export const Login: FC = () => {
   const [role, setRole] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const router = useRouter();
 
   const t = useTranslations('home-page');
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setRole(event.target.value as string);
   };
 
   const submit = () => {
-    const pathName = `home/${role}`;
-    router.push(pathName);
+    setLoading(true);
+    setTimeout(() => {
+      const pathName = `home/${role}`;
+      router.push(pathName);
+    }, 200);
   };
+
+  const optionsDropdown = [
+    {
+      label: t('user-role.placeholder'),
+      value: '',
+    },
+  ].concat(UserRoles);
 
   return (
     <Box className={styles.container}>
@@ -40,35 +46,26 @@ export const Login: FC = () => {
       <Typography variant="h4" fontSize="28px" fontWeight="bold" sx={{ mb: '72px', mt: '24px' }}>
         {t('app-name')}
       </Typography>
-      <FormControl fullWidth>
-        <InputLabel id="home-user-role">{t('user-role.label')}</InputLabel>
-        <Select
-          labelId="home-user-role"
-          id="home-user-role"
-          value={role}
-          label={t('user-role.label')}
-          onChange={handleChange}
-        >
-          <MenuItem value="">
-            <em>{t('user-role.placeholder')}</em>
-          </MenuItem>
-          {UserRoles.map((userRole) => (
-            <MenuItem key={userRole.value} value={userRole.value}>
-              {userRole.label}
-            </MenuItem>
-          ))}
-        </Select>
-        <Button
-          disabled={!role}
-          onClick={submit}
-          color="secondary"
-          variant="contained"
-          fullWidth
-          sx={{ mt: '24px' }}
-        >
-          {t('login')}
-        </Button>
-      </FormControl>
+      <Dropdown
+        id="user-role"
+        name="user-role"
+        fullWidth
+        value={role}
+        label={t('user-role.label')}
+        onChange={handleChange}
+        menuItems={optionsDropdown}
+      />
+      <Button
+        loading={loading}
+        disabled={!role}
+        onClick={submit}
+        color="secondary"
+        variant="contained"
+        fullWidth
+        sx={{ mt: '24px' }}
+      >
+        {t('login')}
+      </Button>
     </Box>
   );
 };
