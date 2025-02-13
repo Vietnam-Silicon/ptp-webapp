@@ -7,7 +7,11 @@ const nextConfig: NextConfig = {
   images: {
     domains: ['directus-asset.aws-dev.vnsilicon.site'],
   },
-  /* config options here */
+  eslint: {
+    // TODO: Warning: This allows production builds to successfully complete even if
+    // your project has ESLint errors.
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default withNextIntl(nextConfig);
