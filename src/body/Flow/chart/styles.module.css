@@ -1,6 +1,16 @@
 .container {
   height: 400px;
   border: 1px solid #E8E8E8;
-  border-radius: 8px;
-  background-color: #FFFFFF,
+  border-radius: 4px;
+  background-color: #FFFFFF;
+  margin-bottom: 16px;
+}
+
+.name {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  height: 56px;
+  padding: 16px;
+  border-bottom: 1px solid #E8E8E8;
 }

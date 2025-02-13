@@ -14,7 +14,7 @@ export const transform = (nodes: NodeResponse[] = [], currentId: string, chartCo
     initialNodes: Node[];
     initialEdges: Edge[];
   }, item: NodeResponse) => {
-    const { parent_nodes = [] } = item;
+    const { parentNodes = [] } = item;
 
     result.initialNodes.push({
       id: `${item.id}`,
@@ -27,10 +27,10 @@ export const transform = (nodes: NodeResponse[] = [], currentId: string, chartCo
       type: 'resizableNode',
     });
 
-    const edges: Edge[] = parent_nodes.map((i) => ({
+    const edges: Edge[] = parentNodes.map((i) => ({
       id: `${i.id}`,
-      source: `${i.related_WorkflowNodes_id}`,
-      target: `${i.WorkflowNodes_id}`,
+      source: `${i.relatedWorkflowNodesId}`,
+      target: `${i.WorkflowNodesId}`,
       markerEnd: { type: MarkerType.Arrow, width: 24, height: 24 },
     }));
     result.initialEdges = result.initialEdges.concat(edges);
