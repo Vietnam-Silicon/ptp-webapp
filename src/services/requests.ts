@@ -26,6 +26,25 @@ apiClient.interceptors.response.use(
   }
 );
 
+const snakeToCamel = (str: string = '') =>
+  str.replace(/(_\w)/g, (match: string) => match[1].toUpperCase());
+
+const transform = (obj: any): any => {
+  if (Array.isArray(obj)) {
+    return obj.map(item => transform(item));
+  } else if (typeof obj === 'object' && obj !== null) {
+    const newObj = {} as any;
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const camelCaseKey = snakeToCamel(key);
+        newObj[camelCaseKey] = transform(obj[key]);
+      }
+    }
+    return newObj;
+  }
+  return obj;
+};
+
 const call = async <T>(endpoint: string, config?: AxiosRequestConfig): Promise<T> => {
   try {
     const response = await apiClient.request<T>({
@@ -35,7 +54,7 @@ const call = async <T>(endpoint: string, config?: AxiosRequestConfig): Promise<T
         'Authorization': 'Bearer T4UdgMRWLswlnKUDfAKSgOP8iHJqundQ'
       }
     });
-    return response.data;
+    return transform(response.data);
   } catch (error) {
     throw error;
   }
