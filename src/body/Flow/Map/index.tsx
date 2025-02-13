@@ -47,21 +47,21 @@ const toLink = (data: any) => {
 const simplifyData = (data: any) => data.reduce((result: any, item: any) => {
   const {
     id,
-    bind_to_workflow_node = {},
-    position_latitude,
-    position_longitude,
+    bindToWorkflowNode = {},
+    positionLatitude,
+    positionLongitude,
     ...rest
   } = item;
 
-  const { id: nodeId, parent_nodes = [] } = bind_to_workflow_node || {};
+  const { id: nodeId, parentNodes = [] } = bindToWorkflowNode || {};
 
-  if (!result.some((i: any) => i.nodeId === nodeId) && bind_to_workflow_node != null) {
+  if (!result.some((i: any) => i.nodeId === nodeId) && bindToWorkflowNode != null) {
     result.push({
       eventId: id,
       nodeId,
-      parentNodes: parent_nodes,
-      lat: position_latitude,
-      lng: position_longitude,
+      parentNodes: parentNodes,
+      lat: positionLatitude,
+      lng: positionLongitude,
       ...rest
     });
   }

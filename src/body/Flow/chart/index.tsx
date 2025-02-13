@@ -25,7 +25,7 @@ const LayoutFlow: FC = () => {
     setConfig,
     config
   } = useContext(FlowContext) ?? {};
-  const { chart_config: chartConfig, nodes: nodesData } = data || {};
+  const { chartConfig, nodes: nodesData } = data || {};
 
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);

@@ -56,7 +56,7 @@ const FlowProdiver = ({ children }: FlowProdiverProps) => {
   }, [flowId]);
 
   useEffect(() => {
-    const jsonData = safeJSONParse(data?.chart_config);
+    const jsonData = safeJSONParse(data?.chartConfig);
 
     if (Object.keys(config || {}).length > 0) {
       saveWFTemplate(flowId, {
