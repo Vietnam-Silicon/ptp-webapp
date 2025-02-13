@@ -61,7 +61,11 @@ const Index = () => {
   return (
     <div>
       <MenuIcon style={{ cursor: 'pointer' }} onClick={toggleDrawer(true)} />
-      <Drawer open={open} onClose={toggleDrawer(false)}>
+      <Drawer
+        open={open}
+        onClose={toggleDrawer(false)}
+        closeAfterTransition={false}
+      >
         {DrawerList}
       </Drawer>
     </div>
