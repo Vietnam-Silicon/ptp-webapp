@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import { Filter } from './index.d';
+import { Dayjs } from 'dayjs'
+
+type Filter = {
+  type: string,
+  startDate: Dayjs | null,
+  endDate: Dayjs | null,
+  search: string
+}
 
 const initFilter: Filter = {
   type: '',
