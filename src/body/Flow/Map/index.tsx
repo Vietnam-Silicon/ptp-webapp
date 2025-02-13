@@ -146,7 +146,7 @@ const Index = () => {
     window.initMap = initMap;
   }, [])
 
-  return <div id="map_div" style={{ height: 400 }}></div>;
+  return <div id="map_div" style={{ height: 320, borderRadius: 4 }}></div>;
 };
 
 export default Index;

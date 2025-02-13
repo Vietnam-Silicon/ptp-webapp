@@ -48,25 +48,28 @@ const LayoutFlow: FC = () => {
   }
 
   return (
-    <ReactFlow
-      selectionOnDrag={false}
-      proOptions={{ hideAttribution: true }}
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      nodeTypes={{ resizableNode: ResizableNode }}
-      onNodeDragStop={getConfig}
-    />
+    <div className={styles.container}>
+      <div className={styles.name}>
+        {data?.name}
+      </div>
+      <ReactFlow
+        selectionOnDrag={false}
+        proOptions={{ hideAttribution: true }}
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        nodeTypes={{ resizableNode: ResizableNode }}
+        onNodeDragStop={getConfig}
+      />
+    </div>
   );
 };
 
 const Index = () => (
-  <div className={styles.container}>
-    <ReactFlowProvider>
-      <LayoutFlow />
-    </ReactFlowProvider>
-  </div>
+  <ReactFlowProvider>
+    <LayoutFlow />
+  </ReactFlowProvider>
 );
 
 export default Index;
