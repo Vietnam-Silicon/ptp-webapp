@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 
 import { Box, type GridColDef, GridRowParams, Table } from 'components';
 import { DatePicker, DebounceInput, MenuItem, Select } from 'controls';
-import { getAsset } from 'unknown/domainConfig';
+import { getAsset } from 'utils/domainConfig';
 
 import styles from './styles.module.css';
 import useEvents from './useEvents';

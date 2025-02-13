@@ -27,7 +27,7 @@ export const Container = () => {
   const router = useRouter();
 
   const onClick = (id: string) => {
-    const pathName = `/container-route/${id}`;
+    const pathName = `/container/${id}`;
     router.push(pathName);
   };
 
