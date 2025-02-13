@@ -1,14 +1,16 @@
 import { Edge, MarkerType, Node } from '@xyflow/react';
 
+import { toCamel } from 'utils/transform';
 import {
   safeJSONParse
-} from 'unknown/jsonTransform';
+} from 'utils/jsonTransform';
 
 import { NodeResponse } from './index.d';
 
 export const transform = (nodes: NodeResponse[] = [], currentId: string, chartConfig: any): { initialNodes: Node[], initialEdges: Edge[] } => {
 
-  const { nodesPosition = {} } = safeJSONParse(chartConfig);
+  const obj = safeJSONParse(chartConfig);
+  const { nodesPosition = {} } = toCamel(obj);
 
   const { initialNodes, initialEdges } = nodes.reduce((result: {
     initialNodes: Node[];

@@ -5,9 +5,10 @@ import {
   workflowTemplate,
   saveWFTemplate,
 } from 'services/events';
+import { toCamel } from 'utils/transform';
 import {
   safeJSONParse
-} from 'unknown/jsonTransform';
+} from 'utils/jsonTransform';
 
 interface FlowContextType {
   currentId: string;
@@ -56,7 +57,8 @@ const FlowProdiver = ({ children }: FlowProdiverProps) => {
   }, [flowId]);
 
   useEffect(() => {
-    const jsonData = safeJSONParse(data?.chartConfig);
+    const obj = safeJSONParse(data?.chartConfig);
+    const jsonData = toCamel(obj);
 
     if (Object.keys(config || {}).length > 0) {
       saveWFTemplate(flowId, {

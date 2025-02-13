@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { toCamel, toSnake } from './transform';
+import { toCamel, toSnake } from 'utils/transform';
 
 const apiClient = axios.create({
   baseURL: 'http://ptp-directus-alb-1876176935.ap-southeast-1.elb.amazonaws.com', // Replace with your API base URL
