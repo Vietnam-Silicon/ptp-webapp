@@ -1,26 +1,52 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useContext } from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
 
-import { getEvents } from 'services/events';
+import { FlowContext, FlowProdiver } from './FlowContext';
+import { MapContext, MapProvider } from './MapContext';
 
-import Flow from './chart';
+import Chart from './chart';
 import Map from './map';
+import styles from './styles.module.css';
 
-const Index = () => {
-  useEffect(() => {
-    getEvents({}).then(res => {
-      console.log(res);
-    });
-  }, []);
-
+const FlowContent = () => {
+  const { loading } = useContext(FlowContext) ?? {};
   return (
     <>
-      <div>aaaa</div>
-      <Flow />
-      <Map />
+      {loading && (
+        <div className={styles.loading}>
+          <CircularProgress />
+        </div>
+      )}
+      {!loading && <Chart />}
     </>
   );
 };
+
+const MapContent = () => {
+  const { loading } = useContext(MapContext) ?? {};
+  return (
+    <>
+      {loading && (
+        <div className={styles.loading}>
+          <CircularProgress />
+        </div>
+      )}
+      {!loading && <Map />}
+    </>
+  );
+};
+
+const Index = () => (
+  <>
+    <FlowProdiver>
+      <FlowContent />
+    </FlowProdiver>
+    <MapProvider>
+      <MapContent />
+    </MapProvider>
+  </>
+);
 
 export default Index;

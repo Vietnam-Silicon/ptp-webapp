@@ -1,115 +1,68 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, FC, useContext } from 'react';
 import {
   ReactFlow,
   ReactFlowProvider,
   useNodesState,
   useEdgesState,
-  ReactFlowInstance,
-  useReactFlow,
   Edge,
   Node,
 } from '@xyflow/react';
-// import { useTranslations } from 'next-intl';
-import { Popover, Typography } from '@mui/material';
-import { orderBy, debounce } from 'lodash-es';
-
-import ResizableNode from './ResizeableNode';
-import Floating from './SimpleFloating';
-import { returnData, flowStorageKey } from './constants';
-import { parseFlowData, transform } from './utils';
-
+import { orderBy } from 'lodash-es';
 import '@xyflow/react/dist/style.css';
 
-const LayoutFlow = () => {
+import { FlowContext } from '../FlowContext';
+
+import ResizableNode from './node';
+import { transform } from './utils';
+import styles from './styles.module.css';
+
+const LayoutFlow: FC = () => {
+  const {
+    data,
+    currentId,
+    setConfig,
+    config
+  } = useContext(FlowContext) ?? {};
+  const { chart_config: chartConfig, nodes: nodesData } = data || {};
+
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
-  const [rfInstance, setRfInstance] = useState<ReactFlowInstance<Node, Edge>>();
-
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  const { setViewport } = useReactFlow();
-
-  const storeFlowDebounce = debounce((data) => {
-    localStorage.setItem(flowStorageKey, JSON.stringify(data));
-  }, 1000);
 
   useEffect(() => {
-    if (rfInstance) {
-      const flow = rfInstance.toObject();
-      storeFlowDebounce(flow);
-    }
-  }, [rfInstance, storeFlowDebounce]);
+    if (nodesData?.length) {
+      const orderBySort = orderBy(nodesData, ['sort'], ['asc']);
+      const { initialNodes, initialEdges } = transform(orderBySort, `${currentId}`, chartConfig);
 
-  useEffect(() => {
-    const flow = parseFlowData(localStorage.getItem(flowStorageKey));
-
-    if (!flow) {
-      const orderDataByLevel = orderBy([...returnData.data.nodes], ['level_in_workflow'], ['asc']);
-      const { initialNodes, initialEdges } = transform(orderDataByLevel);
       setNodes(initialNodes);
       setEdges(initialEdges);
-      return;
     }
+  }, [data]);
 
-    const { nodes, edges, viewport } = flow;
-
-    const { x = 0, y = 0, zoom = 1 } = viewport;
-
-    setNodes(nodes);
-    setEdges(edges);
-    setViewport({ x, y, zoom });
-  }, [setNodes, setEdges, setViewport]);
-
-  const onNodeClick = (event: any) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const getConfig = (_e: React.MouseEvent, node: any) => {
+    setConfig({
+      ...(config || {}),
+      [node.id]: node.position,
+    });
+  }
 
   return (
-    <>
-      <ReactFlow
-        onNodeClick={onNodeClick}
-        selectionOnDrag={false}
-        onInit={setRfInstance}
-        proOptions={{ hideAttribution: true }}
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        nodeTypes={{ resizableNode: ResizableNode }}
-        edgeTypes={{ floating: Floating }}
-      />
-      <Popover
-        id="basic-popover"
-        open={Boolean(anchorEl)}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        disableScrollLock
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-      >
-        <Typography sx={{ p: 2 }}>{'title'}</Typography>
-      </Popover>
-    </>
+    <ReactFlow
+      selectionOnDrag={false}
+      proOptions={{ hideAttribution: true }}
+      nodes={nodes}
+      edges={edges}
+      onNodesChange={onNodesChange}
+      onEdgesChange={onEdgesChange}
+      nodeTypes={{ resizableNode: ResizableNode }}
+      onNodeDragStop={getConfig}
+    />
   );
 };
 
 const Index = () => (
-  <div
-    style={{
-      width: '100%',
-      height: '400px',
-      border: '1px solid #E8E8E8',
-      borderRadius: '8px',
-      backgroundColor: '#FFFFFF',
-    }}
-  >
+  <div className={styles.container}>
     <ReactFlowProvider>
       <LayoutFlow />
     </ReactFlowProvider>
