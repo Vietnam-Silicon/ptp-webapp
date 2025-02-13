@@ -1,16 +1,16 @@
 'use client';
 
 import { FC } from 'react';
-import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 
+import { Box, Typography } from 'components';
 import { UserRoleEnum, UserRoles } from 'body/login/constants';
 import { Transportation } from 'body/transportation/Transportation';
 import { Farmer } from 'body/farmer/Farmer';
 import { Receiving } from 'body/receiving/Receiving';
 
 import styles from './home.module.css';
-import { useParams } from 'next/navigation';
 
 export const Home: FC = () => {
   const params = useParams();
