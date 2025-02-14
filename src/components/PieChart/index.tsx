@@ -17,17 +17,16 @@ type ChartValue = {
 interface PieChartProps {
   data: ChartValue[];
   colors?: string[];
+  height?: number
 }
 
 const SAMPLE_COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 const renderCustomLabel = ({ name }: ChartValue) => name;
 
-export const PieChart: FC<PieChartProps> = ({ data, colors }) => {
-  const chartColors = colors ?? SAMPLE_COLORS;
-
+export const PieChart: FC<PieChartProps> = ({ height = 300, data, colors = SAMPLE_COLORS }) => {
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <OriginalPieChart width={400} height={400}>
+    <ResponsiveContainer width="100%" height={height}>
+      <OriginalPieChart >
         <Pie
           dataKey="value"
           isAnimationActive={false}
@@ -40,11 +39,12 @@ export const PieChart: FC<PieChartProps> = ({ data, colors }) => {
           nameKey="name"
         >
           {data.map((_entry, index) => (
-            <Cell key={`cell-${index}`} fill={chartColors[index % chartColors.length]} />
+            <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
           ))}
         </Pie>
         <Tooltip />
       </OriginalPieChart>
+
     </ResponsiveContainer>
   );
 };

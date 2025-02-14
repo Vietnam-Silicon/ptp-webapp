@@ -1,3 +1,7 @@
+.main {
+  border: none;
+}
+
 .container {
   height: 500px;
   width: 100%;

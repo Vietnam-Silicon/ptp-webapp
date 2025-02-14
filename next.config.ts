@@ -5,7 +5,7 @@ const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['directus-asset.aws-dev.vnsilicon.site'],
+    domains: ['directus.dev.vnsilicon.site'],
   },
   eslint: {
     // TODO: Warning: This allows production builds to successfully complete even if

@@ -87,7 +87,6 @@ export const Farmer: FC = () => {
             justifyContent: 'center',
             alignItems: 'center',
             width: '100%',
-            height: '300px',
             borderRadius: '12px',
             border: '1px solid #eeeeee',
             minWidth: '100px',

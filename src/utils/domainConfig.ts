@@ -1,1 +1,1 @@
-export const getAsset = (filename: string) => `https://directus-asset.aws-dev.vnsilicon.site/${filename}`
+export const getAsset = (filename: string) => `https://directus.dev.vnsilicon.site/${filename}`
