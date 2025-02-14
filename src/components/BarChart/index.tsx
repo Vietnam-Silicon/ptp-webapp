@@ -1,3 +1,5 @@
+'use client'
+
 import React, { FC } from 'react';
 import {
   BarChart as BarChartOriginal,
@@ -7,18 +9,19 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from 'components/Chart';
+} from 'recharts';
 
 interface BarChartProps {
+  height?: number;
   data: { name: string; value: number }[];
   chartColor?: string;
+  showGrid?: boolean
 }
 
-export const BarChart: FC<BarChartProps> = ({ data, chartColor }) => {
+export const BarChart: FC<BarChartProps> = ({ height = 300, data, chartColor = '#00FEFC', showGrid = true }) => {
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer width="100%" height={height}>
       <BarChartOriginal
-        height={300}
         data={data}
         margin={{
           top: 5,
@@ -27,11 +30,11 @@ export const BarChart: FC<BarChartProps> = ({ data, chartColor }) => {
           bottom: 5,
         }}
       >
-        <CartesianGrid strokeDasharray="3 3" />
+        {showGrid ? <CartesianGrid strokeDasharray="3 3" /> : null}
         <XAxis dataKey="name" />
         <YAxis />
         <Tooltip />
-        <Bar dataKey="value" fill={chartColor ?? '#00FEFC'} maxBarSize={48} />
+        <Bar dataKey="value" fill={chartColor} maxBarSize={48} />
       </BarChartOriginal>
     </ResponsiveContainer>
   );

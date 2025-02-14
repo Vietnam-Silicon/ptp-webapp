@@ -3,10 +3,10 @@
   border: 1px solid #f0f0f0;
   border-radius: 8px;
   background-color: #ffffff;
+  position: relative;
 }
 
 .title {
-  margin-bottom: 8px;
   color: #8C8C8C;
   font-size: 14px;
 }
@@ -14,40 +14,22 @@
 .data {
   display: flex;
   gap: 12px;
-  margin-bottom: 24px;
+  margin: 20px 0 4px;
+}
+
+.value {
+  font-size: 24px;
 }
 
 .percent {
   display: flex;
-  font-size: 12px;
-  border-radius: 4px;
-  padding: 4px;
   width: fit-content;
-
-  .arrow {
-    margin-right: 8px;
-  }
-}
-
-.increasePercent {
-  background: #E6F7FF;
-  color: #1890FF;
-}
-
-.decreasePercent {
-  background: #FFF7E6;
-  color: #FAAD14;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .extra {
   color: #8C8C8C;
   font-size: 12px;
-}
-
-.extraIncrease {
-  color: #1890FF;
-}
-
-.extraDecrease {
-  color: #FAAD14;
 }

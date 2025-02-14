@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } 
 import { toCamel, toSnake } from 'utils/transform';
 
 const apiClient = axios.create({
-  baseURL: 'http://ptp-directus-alb-1876176935.ap-southeast-1.elb.amazonaws.com', // Replace with your API base URL
+  baseURL: 'https://directus.dev.vnsilicon.site', // Replace with your API base URL
   timeout: 30000, // Request timeout in milliseconds
 });
 
