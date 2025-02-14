@@ -1,4 +1,4 @@
-'use-client';
+'use client';
 
 import { FarmerDetail } from 'body/farmer/Detail';
 

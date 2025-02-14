@@ -1,5 +1,4 @@
 import Header from './Header';
-import { Menu, MenuItem } from './Menu';
 
 import { InfoCard } from './InfoCard';
 import { TransportCard } from './TransportCard';
@@ -34,9 +33,10 @@ export {
   Table,
   Menu,
   MenuItem,
+  MenuList,
   BarChart,
   CircularProgress,
-  AreaChart
+  AreaChart,
   ListItemText,
   SwipeableDrawer,
 };

@@ -1,5 +1,6 @@
+'use client';
+
 import { useState, useRef, FC } from 'react';
-import Image from 'next/image';
 import {
   Box,
   Dialog,
@@ -8,12 +9,17 @@ import {
   DialogTitle,
   IconButton,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 
 import SaveIcon from '@mui/icons-material/Save';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddAPhotoOutlinedIcon from '@mui/icons-material/AddAPhotoOutlined';
+import CloseIcon from '@mui/icons-material/Close';
+
+import Image from '../Image';
 
 const maxImage = 3;
 
@@ -38,6 +44,7 @@ const ImageView: FC<ImageViewProps> = ({ onPreview, imageUrl, id, onStartCamera,
     >
       {imageUrl ? (
         <Image
+          internalAsset={true}
           onClick={() => onPreview(id)}
           width={100}
           height={100}
@@ -89,7 +96,9 @@ export const CameraForm = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [selectedImgId, setSelectedImgId] = useState<string>();
+  const theme = useTheme();
 
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const getImgId = (value: string) => {
     setSelectedImgId(value);
   };
@@ -104,15 +113,20 @@ export const CameraForm = () => {
     }
   };
 
-  const handleOpen = () => {
-    setOpen(true);
-    startCamera();
+  const handleOpen = async () => {
+    try {
+      setOpen(true);
+      startCamera();
+    } catch (error) {
+      setOpen(false);
+
+      console.error(error);
+    }
   };
 
   const handleClose = () => {
     stopCamera();
     setOpen(false);
-    setPhotos([]);
   };
 
   const takePhoto = () => {
@@ -130,7 +144,6 @@ export const CameraForm = () => {
       const imgUrl = canvas.toDataURL('image/png');
 
       const copiedPhotos = [...photos];
-
       for (const photo of copiedPhotos) {
         if (!photo.url) {
           photo.url = imgUrl;
@@ -209,8 +222,11 @@ export const CameraForm = () => {
         </Box>
       </Box>
 
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+      <Dialog open={open} onClose={handleClose} fullWidth fullScreen={fullScreen} maxWidth="sm">
         <DialogTitle align="center">Take a Photo</DialogTitle>
+        <IconButton sx={{ position: 'absolute', right: '16px', top: '16px' }} onClick={handleClose}>
+          <CloseIcon fontSize="inherit" />
+        </IconButton>
         <DialogContent
           sx={{
             display: 'flex',
@@ -222,6 +238,7 @@ export const CameraForm = () => {
         >
           {selectedImage && (
             <Image
+              internalAsset
               key={selectedImage.id}
               width={300}
               height={300}
@@ -231,16 +248,14 @@ export const CameraForm = () => {
             />
           )}
           {!selectedImage && (
-            <>
-              <video
-                ref={videoRef}
-                autoPlay
-                playsInline
-                style={{ width: '100%', borderRadius: 8, height: '300px' }}
-              />
-              <canvas ref={canvasRef} style={{ display: 'none' }} />
-            </>
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              style={{ width: '100%', borderRadius: 8, height: '300px' }}
+            />
           )}
+          <canvas ref={canvasRef} style={{ display: 'none' }} />
         </DialogContent>
 
         <DialogActions>

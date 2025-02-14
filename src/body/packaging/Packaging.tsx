@@ -63,10 +63,7 @@ export const Packaging: FC = () => {
 
   return (
     <>
-      <Box
-        component="div"
-        sx={{ display: 'flex', flexDirection: 'column', gap: '16px', minHeight: '800px' }}
-      >
+      <Box component="div" sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <InfoCard
           title="Nonthaburi Durian"
           description="North of Chanthaburi City on Hwy 317"
@@ -94,7 +91,9 @@ export const Packaging: FC = () => {
         }}
       >
         <Button
-          onClick={() => setShowDrawer(true)}
+          onClick={() => {
+            setShowDrawer(true);
+          }}
           startIcon={<AddOutlinedIcon />}
           variant="contained"
           sx={{ backgroundColor: '#eeeeee', color: 'black', height: '56px', borderRadius: '16px' }}

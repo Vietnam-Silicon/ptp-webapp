@@ -1,4 +1,4 @@
-'use-client';
+'use client';
 
 import { InputInfo } from 'body/transportation/InputInfo';
 import ClientLocalizationProvider from 'ClientLocalizationProvider';

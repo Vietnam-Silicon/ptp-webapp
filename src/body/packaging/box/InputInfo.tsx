@@ -107,10 +107,9 @@ export const InputInfo = () => {
   const onSubmit = () => {
     setLoading(true);
     setTimeout(() => {
-      router.push(`/successful/${UserRoleEnum.AggregatorReceiving}`);
+      router.push(`/successful/${UserRoleEnum.AggregatorPackaging}`);
     }, 300);
   };
-  router.push(`/successful/${UserRoleEnum.AggregatorReceiving}`);
 
   const goNextPage = (value: string) => {
     const pathName = `/packaging/box/input-info/?boxId=${value}`;
