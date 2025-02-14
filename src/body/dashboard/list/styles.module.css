@@ -1,10 +1,22 @@
 .container {
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.filterContainer {
   display: grid;
   grid-gap: 24px;
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
   margin-bottom: 24px;
-  background: #fff;
 }
 
 .row {

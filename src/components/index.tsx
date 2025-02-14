@@ -16,6 +16,7 @@ import CircularProgress from './CircularProgress';
 
 import { PieChart } from './Chart/PieChart';
 import { BarChart } from './Chart/BarChart';
+import { AreaChart } from './Chart/AreaChart';
 
 export {
   InfoCard,
@@ -33,5 +34,6 @@ export {
   MenuItem,
   BarChart,
   CircularProgress,
+  AreaChart
 };
 export type { GridColDef, GridRowParams };

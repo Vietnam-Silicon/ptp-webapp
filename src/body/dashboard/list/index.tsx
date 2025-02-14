@@ -127,12 +127,14 @@ const Index = () => {
   }, [rawData])
 
   const handleRowClick = ({ row }: GridRowParams<EventType>) => {
-    router.push(`/flow/${row.bindToWorkflowNode?.id}/${row.traceId}`)
+    router.push('/flow/2/1')
   };
 
   return (
-    <>
-      <Box className={styles.container}>
+    <Box className={styles.container}>
+      <p className={styles.title}>Event log tracking</p>
+
+      <div className={styles.filterContainer}>
         <Select
           name="type"
           label="Select type"
@@ -170,7 +172,7 @@ const Index = () => {
           value={filter.search}
           onChange={(event) => { handleChange('search', event.target.value) }}
         />
-      </Box>
+      </div>
 
       <Table
         classes={{ row: styles.row }}
@@ -179,7 +181,7 @@ const Index = () => {
         rows={data}
         columns={columns}
       />
-    </>
+    </Box>
   );
 }
 

@@ -1,4 +1,6 @@
+'use client';
 import { useEffect, useState } from 'react';
+
 import { Paper, Pagination, PaginationItem } from '@mui/material'
 import type { DataGridProps, GridColDef, GridRowParams } from '@mui/x-data-grid'
 import { DataGrid, gridPageCountSelector, gridPageSelector, useGridApiContext, useGridSelector } from '@mui/x-data-grid'
@@ -45,7 +47,7 @@ const Table = ({ rows, classes, ...props }: DataGridProps) => {
     <Paper className={styles.container}>
       <DataGrid
         rows={rows}
-        classes={{ columnHeaderTitle: styles.columnHeaderTitle, cell: styles.cell, ...classes }}
+        classes={{ main: styles.main, columnHeaderTitle: styles.columnHeaderTitle, cell: styles.cell, ...classes }}
         rowHeight={70}
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}

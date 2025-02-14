@@ -1,7 +1,28 @@
 .container {
   display: grid;
   grid-gap: 24px;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   margin-bottom: 24px;
+}
+
+.chartsContainer {
+  display: grid;
+  grid-gap: 24px;
+  grid-template-columns: 1.75fr 1.25fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.chartContainer {
+  padding: 16px;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.chartTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
 }
