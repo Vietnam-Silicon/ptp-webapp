@@ -15,8 +15,8 @@ import { EventType } from 'types/Event';
 
 const DATE_FORMAT = 'MMM DD,YYYY hh:mm'
 const columns: GridColDef<EventType>[] = [
-  { field: 'unique_code', headerName: 'Patch/Lot', flex: 1 },
-  { field: 'event_time', headerName: 'Event Time', renderCell: ({ row }) => dayjs(row.eventTime).format(DATE_FORMAT), flex: 1 },
+  { field: 'uniqueCode', headerName: 'Patch/Lot', flex: 1 },
+  { field: 'eventTime', headerName: 'Event Time', renderCell: ({ row }) => dayjs(row.eventTime).format(DATE_FORMAT), flex: 1 },
   { field: 'location', renderCell: ({ row }) => row.recordedBy?.address, headerName: 'Location', flex: 1 },
   { field: 'type', headerName: 'Type', renderCell: ({ row }) => row.metadata?.length ? row.metadata[0].collection : null, flex: 1 },
   {
@@ -24,14 +24,18 @@ const columns: GridColDef<EventType>[] = [
     field: 'product', headerName: 'Product', renderCell: ({ row }) => (
       <div className={styles.product}>
         <Image
-          internalAsset={!!row.mainProduct?.primaryImage?.filenameDisk}
+          internalAsset={!row.mainProduct?.primaryImage?.filenameDisk}
           src={row.mainProduct?.primaryImage?.filenameDisk || './product-empty.svg'}
           alt=''
           width={32}
           height={32}
         />
-        <div><div className={styles.productTitle}>{row.mainProduct?.name}</div><div className={styles.productDes}>{row.mainProduct?.description}</div></div>
-      </div>),
+        <div>
+          <div className={styles.productTitle}>{row.mainProduct?.name}</div>
+          <div className={styles.productDes}>{row.mainProduct?.description}</div>
+        </div>
+      </div>
+    ),
     sortable: false,
     flex: 2
   },
@@ -41,7 +45,7 @@ const columns: GridColDef<EventType>[] = [
     field: 'supplier', headerName: 'Suppliers', renderCell: ({ row }) => (
       <div className={styles.supplier}>
         <Image
-          internalAsset={!!row.recordedBy?.logo?.filenameDisk}
+          internalAsset={!row.recordedBy?.logo?.filenameDisk}
           src={row.recordedBy?.logo?.filenameDisk || './supplier-empty.svg'}
           alt=''
           width={32}

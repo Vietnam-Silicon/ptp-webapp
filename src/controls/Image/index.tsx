@@ -1,7 +1,7 @@
 import Image, { ImageProps } from 'next/image';
 
 type ImgProps = {
-  internalAsset?: boolean
+  internalAsset?: boolean // default false
 }
 
 const Index = ({ internalAsset, ...props }: ImageProps & ImgProps) =>
