@@ -16,7 +16,7 @@ export const workflowTemplate = async (code: string): Promise<any> => {
   const data = await get(`/items/WorkflowTemplates/${code}`, {
     params: {
       fields: [
-        'name,description,chart_config,primary_image.filename_disk,nodes.*,nodes.parent_nodes.*,node.icon.*',
+        'name,description,chart_config,primary_image.filename_disk,nodes.*,nodes.parent_nodes.*,nodes.icon.*',
       ]
     }
   });

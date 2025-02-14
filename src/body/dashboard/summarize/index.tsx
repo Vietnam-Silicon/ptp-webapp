@@ -1,6 +1,7 @@
 import clsx from 'clsx';
-import Image from 'next/image';
 import type { FC } from 'react';
+
+import { Image } from 'controls';
 
 import styles from './styles.module.css';
 
@@ -19,10 +20,14 @@ const Index: FC<SummarizeProps> = ({ title, value, percent, isIncrease = true, e
     <div className={styles.data}>
       <h4 className={styles.value} >{value}</h4>
       <div className={clsx(styles.percent, isIncrease ? styles.increasePercent : styles.decreasePercent)}>
-        {isIncrease ?
-          <Image src='./increase-arrow.svg' alt='' className={styles.arrow} width={10} height={10} />
-          : <Image src='./decrease-arrow.svg' alt='' className={styles.arrow} width={10} height={10} />
-        }
+        <Image
+          internalAsset
+          src={isIncrease ? './increase-arrow.svg' : './decrease-arrow.svg'}
+          alt={title}
+          className={styles.arrow}
+          width={10}
+          height={10}
+        />
         <p>{percent}%</p>
       </div>
     </div>

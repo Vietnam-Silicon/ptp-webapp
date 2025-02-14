@@ -52,16 +52,18 @@ const LayoutFlow: FC = () => {
       <div className={styles.name}>
         {data?.name}
       </div>
-      <ReactFlow
-        selectionOnDrag={false}
-        proOptions={{ hideAttribution: true }}
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        nodeTypes={{ resizableNode: ResizableNode }}
-        onNodeDragStop={getConfig}
-      />
+      <div className={styles.flow}>
+        <ReactFlow
+          selectionOnDrag={false}
+          proOptions={{ hideAttribution: true }}
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          nodeTypes={{ resizableNode: ResizableNode }}
+          onNodeDragStop={getConfig}
+        />
+      </div>
     </div>
   );
 };

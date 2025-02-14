@@ -1,3 +1,5 @@
+'use client';
+
 import { FormControl, InputLabel, OutlinedInput, OutlinedInputProps } from '@mui/material';
 import { debounce } from 'lodash-es';
 import { FC, useEffect, useMemo, useState } from 'react';
