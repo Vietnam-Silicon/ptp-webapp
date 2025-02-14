@@ -18,7 +18,13 @@ const Index: FC<ResizableNodeProps> = props => {
   const { data, selected } = props;
   return (
     <div className={`${styles.container} ${selected && styles.selected}`}>
-      <Image src={data?.icon?.filenameDisk as string} width="48" height="48" alt={data.label} />
+      <Image
+        internalAsset={!data?.icon?.filenameDisk}
+        src={data?.icon?.filenameDisk as string || '/product-empty.svg'}
+        width={48}
+        height={48}
+        alt={data.label}
+      />
       {data.label}
       <Handle type="target"
         style={{ border: 0, minWidth: 0, minHeight: 0, width: 0, height: 0 }}

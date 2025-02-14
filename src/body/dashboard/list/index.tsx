@@ -25,7 +25,7 @@ const columns: GridColDef<EventType>[] = [
       <div className={styles.product}>
         <Image
           internalAsset={!row.mainProduct?.primaryImage?.filenameDisk}
-          src={row.mainProduct?.primaryImage?.filenameDisk || './product-empty.svg'}
+          src={row.mainProduct?.primaryImage?.filenameDisk || '/product-empty.svg'}
           alt=''
           width={32}
           height={32}
