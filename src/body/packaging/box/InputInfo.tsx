@@ -68,7 +68,9 @@ const SampleDataBoxInformation: AccordingData = [
 ];
 
 export const InputInfo = () => {
+  const [loading, setLoading] = useState(false);
   const [showScanModal, setShowScanModal] = useState(false);
+
   const [formState, setFormState] = useState<Partial<BoxPackagingDetailType>>();
 
   const router = useRouter();
@@ -103,8 +105,12 @@ export const InputInfo = () => {
   };
 
   const onSubmit = () => {
-    router.push(`/successful/${UserRoleEnum.AggregatorReceiving}`);
+    setLoading(true);
+    setTimeout(() => {
+      router.push(`/successful/${UserRoleEnum.AggregatorReceiving}`);
+    }, 300);
   };
+  router.push(`/successful/${UserRoleEnum.AggregatorReceiving}`);
 
   const goNextPage = (value: string) => {
     const pathName = `/packaging/box/input-info/?boxId=${value}`;
@@ -182,6 +188,7 @@ export const InputInfo = () => {
         sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}
       >
         <Button
+          loading={loading}
           disabled={!checkIsValidForm()}
           sx={{ borderRadius: '24px' }}
           variant="contained"

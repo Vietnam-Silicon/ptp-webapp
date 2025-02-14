@@ -1,7 +1,7 @@
-'use-client';
+'use client';
 
-import { ReceivingDetail } from 'body/receiving/Detail';
+import { CrateDetail } from 'body/receiving/Detail';
 
-const Index = () => <ReceivingDetail />;
+const Index = () => <CrateDetail />;
 
 export default Index;

@@ -68,6 +68,7 @@ const SampleData: AccordingData = [
 
 export const CrateDetail = () => {
   const searchParam = useSearchParams();
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [formState, setFormState] = useState<Partial<ReceivingInformationType>>();
   const cratedId = searchParam.get('cratedId') ?? '';
@@ -96,7 +97,10 @@ export const CrateDetail = () => {
   };
 
   const onSubmit = () => {
-    router.push(`/successful/${UserRoleEnum.AggregatorReceiving}`);
+    setLoading(true);
+    setTimeout(() => {
+      router.push(`/successful/${UserRoleEnum.AggregatorReceiving}`);
+    }, 300);
   };
 
   return (
@@ -140,6 +144,7 @@ export const CrateDetail = () => {
         sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}
       >
         <Button
+          loading={loading}
           disabled={!checkIsValidForm()}
           variant="contained"
           fullWidth

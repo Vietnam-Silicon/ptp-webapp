@@ -1,11 +1,17 @@
-'use-client';
+'use client';
+import dynamic from 'next/dynamic';
 
-import { InputInfo } from 'body/packaging/box/InputInfo';
 import ClientLocalizationProvider from 'ClientLocalizationProvider';
 
+const InputInfoNoSsr = dynamic(
+  () => import('body/packaging/box/InputInfo').then((mod) => mod.InputInfo),
+  {
+    ssr: false,
+  },
+);
 const Index = () => (
   <ClientLocalizationProvider>
-    <InputInfo />
+    <InputInfoNoSsr />
   </ClientLocalizationProvider>
 );
 

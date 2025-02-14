@@ -68,7 +68,7 @@ export const Receiving: FC = () => {
     <>
       <Box
         component="div"
-        sx={{ display: 'flex', flexDirection: 'column', gap: '16px', minHeight: '800px' }}
+        sx={{ display: 'flex', flexDirection: 'column', gap: '16px', minHeight: '910px' }}
       >
         <InfoCard
           title="Nonthaburi Durian"
