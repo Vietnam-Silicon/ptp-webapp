@@ -54,6 +54,7 @@ const LayoutFlow: FC = () => {
       </div>
       <div className={styles.flow}>
         <ReactFlow
+          defaultViewport={{ x: 10, y: 10, zoom: 0.2 }}
           selectionOnDrag={false}
           proOptions={{ hideAttribution: true }}
           nodes={nodes}
