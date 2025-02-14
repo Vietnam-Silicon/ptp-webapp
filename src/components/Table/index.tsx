@@ -1,9 +1,9 @@
-'use client'
+'use client';
+import { useEffect, useState } from 'react';
 
 import { Paper, Pagination, PaginationItem } from '@mui/material'
 import type { DataGridProps, GridColDef, GridRowParams } from '@mui/x-data-grid'
 import { DataGrid, gridPageCountSelector, gridPageSelector, useGridApiContext, useGridSelector } from '@mui/x-data-grid'
-import { useEffect, useState } from 'react';
 
 import styles from './styles.module.css'
 

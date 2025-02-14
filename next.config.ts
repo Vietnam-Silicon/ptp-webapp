@@ -5,7 +5,9 @@ const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['directus.dev.vnsilicon.site'],
+    remotePatterns: [
+      { hostname: `${process.env.NEXT_PUBLIC_ASSET_HOST}` },
+    ],
   },
   eslint: {
     // TODO: Warning: This allows production builds to successfully complete even if

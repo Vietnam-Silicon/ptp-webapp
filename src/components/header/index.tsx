@@ -1,5 +1,4 @@
-import Image from 'next/image';
-
+import Image from 'controls/Image';
 import Drawer from './Drawer';
 import Logo from './Logo';
 import styles from './styles.module.css';
@@ -12,6 +11,7 @@ const Index = () => (
     </div>
     <div className={styles.right}>
       <Image
+        internalAsset
         width={24}
         height={24}
         src="/avatar.png"

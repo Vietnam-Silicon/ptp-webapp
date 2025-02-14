@@ -2,13 +2,11 @@
 
 import clsx from 'clsx'
 import dayjs from 'dayjs';
-import Image from 'next/image';
 import { useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Box, type GridColDef, GridRowParams, Table } from 'components';
-import { DatePicker, DebounceInput, MenuItem, Select } from 'controls';
-import { getAsset } from 'utils/domainConfig';
+import { DatePicker, DebounceInput, MenuItem, Select, Image } from 'controls';
 
 import styles from './styles.module.css';
 import useEvents from './useEvents';
@@ -17,21 +15,27 @@ import { EventType } from 'types/Event';
 
 const DATE_FORMAT = 'MMM DD,YYYY hh:mm'
 const columns: GridColDef<EventType>[] = [
-  { field: 'unique_code', headerName: 'Patch/Lot', flex: 1 },
-  { field: 'event_time', headerName: 'Event Time', renderCell: ({ row }) => dayjs(row.eventTime).format(DATE_FORMAT), flex: 1 },
+  { field: 'uniqueCode', headerName: 'Patch/Lot', flex: 1 },
+  { field: 'eventTime', headerName: 'Event Time', renderCell: ({ row }) => dayjs(row.eventTime).format(DATE_FORMAT), flex: 1 },
   { field: 'location', renderCell: ({ row }) => row.recordedBy?.address, headerName: 'Location', flex: 1 },
   { field: 'type', headerName: 'Type', renderCell: ({ row }) => row.metadata?.length ? row.metadata[0].collection : null, flex: 1 },
   {
     display: 'flex',
     field: 'product', headerName: 'Product', renderCell: ({ row }) => (
       <div className={styles.product}>
-        {row.mainProduct?.primaryImage?.filenameDisk ?
-          <Image src={getAsset(row.mainProduct.primaryImage.filenameDisk)} alt='' width={32} height={32} />
-          :
-          <Image src='./product-empty.svg' alt='' width={32} height={32} />
-        }
-        <div><div className={styles.productTitle}>{row.mainProduct?.name}</div><div className={styles.productDes}>{row.mainProduct?.description}</div></div>
-      </div>),
+        <Image
+          internalAsset={!row.mainProduct?.primaryImage?.filenameDisk}
+          src={row.mainProduct?.primaryImage?.filenameDisk || '/product-empty.svg'}
+          alt=''
+          width={32}
+          height={32}
+        />
+        <div>
+          <div className={styles.productTitle}>{row.mainProduct?.name}</div>
+          <div className={styles.productDes}>{row.mainProduct?.description}</div>
+        </div>
+      </div>
+    ),
     sortable: false,
     flex: 2
   },
@@ -40,11 +44,13 @@ const columns: GridColDef<EventType>[] = [
     display: 'flex',
     field: 'supplier', headerName: 'Suppliers', renderCell: ({ row }) => (
       <div className={styles.supplier}>
-        {row.recordedBy?.logo?.filenameDisk ?
-          <Image src={getAsset(row.recordedBy.logo.filenameDisk)} alt='' width={32} height={32} />
-          :
-          <Image src='./supplier-empty.svg' alt='' width={32} height={32} />
-        }
+        <Image
+          internalAsset={!row.recordedBy?.logo?.filenameDisk}
+          src={row.recordedBy?.logo?.filenameDisk || './supplier-empty.svg'}
+          alt=''
+          width={32}
+          height={32}
+        />
         <div><div className={styles.supplierTitle}>{row.recordedBy?.name}</div><div className={styles.supplierDes}>{row.recordedBy?.description}</div></div>
       </div>),
     sortable: false,

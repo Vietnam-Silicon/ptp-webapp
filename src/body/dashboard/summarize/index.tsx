@@ -1,5 +1,6 @@
-import Image from 'next/image';
 import { ReactNode, type FC } from 'react';
+
+import { Image } from 'controls';
 
 import styles from './styles.module.css';
 
@@ -18,10 +19,14 @@ const Index: FC<SummarizeProps> = ({ title, value, percent, isIncrease = true, c
     <div className={styles.data}>
       <h4 className={styles.value} >{value}</h4>
       <div className={styles.percent}>
-        {isIncrease ?
-          <Image src='./increase-arrow.svg' alt='' className={styles.arrow} width={16} height={16} />
-          : <Image src='./decrease-arrow.svg' alt='' className={styles.arrow} width={16} height={16} />
-        }
+        <Image
+          internalAsset
+          src={isIncrease ? './increase-arrow.svg' : './decrease-arrow.svg'}
+          alt={title}
+          className={styles.arrow}
+          width={10}
+          height={10}
+        />
         <p>{percent}%</p>
       </div>
     </div>

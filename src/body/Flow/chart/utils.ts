@@ -20,8 +20,11 @@ export const transform = (nodes: NodeResponse[] = [], currentId: string, chartCo
 
     result.initialNodes.push({
       id: `${item.id}`,
-      data: { label: item.name, id: item.id, selected: `${item.id}` === currentId },
-
+      data: {
+        ...item,
+        label: item.name, id: item.id,
+        selected: `${item.id}` === currentId,
+      },
       position: {
         x: nodesPosition[item.id]?.x || 0,
         y: nodesPosition[item.id]?.y || 0,
