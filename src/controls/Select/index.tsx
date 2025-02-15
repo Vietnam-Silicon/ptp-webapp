@@ -5,18 +5,16 @@ type Props = SelectProps & {
   allowNone: boolean,
 }
 
-const Select: FC<Props> = ({ size, allowNone, children, ...props }) => {
-  return (
-    <FormControl fullWidth>
-      <InputLabel size={size === 'medium' ? 'normal' : 'small'} htmlFor={props.id}>{props.label}</InputLabel>
-      <MUISelect size={size} id={props.id} {...props} >
-        {allowNone ?
-          <MenuItem key="" value="">None</MenuItem> : null
-        }
-        {children}
-      </MUISelect>
-    </FormControl>
-  );
-};
+const Select: FC<Props> = ({ size, allowNone, children, ...props }) => (
+  <FormControl fullWidth>
+    <InputLabel size={size === 'medium' ? 'normal' : 'small'} htmlFor={props.id}>{props.label}</InputLabel>
+    <MUISelect size={size} id={props.id} {...props} >
+      {allowNone ?
+        <MenuItem key="" value="">None</MenuItem> : null
+      }
+      {children}
+    </MUISelect>
+  </FormControl>
+);
 
-export { Select, MenuItem }
+export { Select, MenuItem };

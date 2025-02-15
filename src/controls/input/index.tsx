@@ -6,16 +6,14 @@ import { FC, useEffect, useMemo, useState } from 'react';
 
 const DEBOUNCE_TIME = 500;
 
-const OutlineInput: FC<OutlinedInputProps> = ({ size, ...props }) => {
-  return (
-    <FormControl fullWidth>
-      <InputLabel size={size === 'medium' ? 'normal' : 'small'} htmlFor={props.id}>
-        {props.label}
-      </InputLabel>
-      <OutlinedInput sx={{ height: '40px' }} size={size} id={props.id} {...props} />
-    </FormControl>
-  );
-};
+const OutlineInput: FC<OutlinedInputProps> = ({ size, ...props }) => (
+  <FormControl fullWidth>
+    <InputLabel size={size === 'medium' ? 'normal' : 'small'} htmlFor={props.id}>
+      {props.label}
+    </InputLabel>
+    <OutlinedInput sx={{ height: '40px' }} size={size} id={props.id} {...props} />
+  </FormControl>
+);
 
 const DebounceInput: FC<OutlinedInputProps> = ({ value, defaultValue, onChange, ...props }) => {
   const [displayValue, setDisplayValue] = useState(defaultValue ?? value);
