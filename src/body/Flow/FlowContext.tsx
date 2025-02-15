@@ -14,8 +14,6 @@ interface FlowContextType {
   currentId: string;
   loading: boolean;
   data: any;
-  currentNode: any | undefined;
-  setCurrent: (a: any) => void;
   config: any;
   setConfig: (a: any) => void;
 }
@@ -28,8 +26,6 @@ const FlowContext = createContext<FlowContextType>({
   currentId: '',
   loading: false,
   data: {},
-  currentNode: undefined,
-  setCurrent: () => { },
   config: {},
   setConfig: () => { },
 });
@@ -46,7 +42,6 @@ const FlowProdiver = ({ children }: FlowProdiverProps) => {
   const { flowId } = useParams<{ flowId: string }>();
   const [data, setData] = useState<any>(null);
   const [isPending, startTransition] = useTransition();
-  const [currentNode, setCurrent] = useState<any>(null);
   const [config, setConfig] = useState<any>({});
 
   useEffect(() => {
@@ -77,9 +72,7 @@ const FlowProdiver = ({ children }: FlowProdiverProps) => {
       value={{
         currentId: flowId,
         loading: isPending,
-        currentNode: currentNode,
         data,
-        setCurrent,
         config,
         setConfig,
       }}

@@ -7,7 +7,10 @@ type ImgProps = {
 const Index = ({ internalAsset, ...props }: ImageProps & ImgProps) =>
   <Image
     {...props}
-    src={internalAsset ? props.src : `${process.env.NEXT_PUBLIC_ASSET_DOMAIN}/${props.src}`
+    src={
+      internalAsset ?
+        props.src :
+        `${process.env.NEXT_PUBLIC_ASSET_DOMAIN}/${props.src}`
     }
   />
 

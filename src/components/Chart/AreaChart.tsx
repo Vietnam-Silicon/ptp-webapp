@@ -36,25 +36,23 @@ export const AreaChart: FC<Props> = ({
   showXAxis = true,
   showYAxis = true,
   showTooltip = true
-}) => {
-  return (
-    <ResponsiveContainer width={width} height={height}>
-      <AreaChartOriginal
-        data={data}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-          ...margin
-        }}
-      >
-        {showGrid ? <CartesianGrid strokeDasharray="3 3" /> : null}
-        {showXAxis ? <XAxis dataKey="name" /> : null}
-        {showYAxis ? <YAxis /> : null}
-        {showTooltip ? <Tooltip /> : null}
-        <Area type="linear" dataKey="value" stroke={strokeColor} fill={chartColor} />
-      </AreaChartOriginal>
-    </ResponsiveContainer>
-  );
-};
+}) => (
+  <ResponsiveContainer width={width} height={height}>
+    <AreaChartOriginal
+      data={data}
+      margin={{
+        top: 5,
+        right: 30,
+        left: 20,
+        bottom: 5,
+        ...margin
+      }}
+    >
+      {showGrid ? <CartesianGrid strokeDasharray="3 3" /> : null}
+      <XAxis hide={showXAxis} dataKey="name" />
+      <YAxis hide={showYAxis} />
+      {showTooltip ? <Tooltip /> : null}
+      <Area type="linear" dataKey="value" stroke={strokeColor} fill={chartColor} />
+    </AreaChartOriginal>
+  </ResponsiveContainer>
+);

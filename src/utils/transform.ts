@@ -35,4 +35,4 @@ const toCamel = (obj: any): any => {
   return obj;
 };
 
-export { toCamel, toSnake };
+export { toCamel, toSnake, snakeToCamel, camelToSnake };
