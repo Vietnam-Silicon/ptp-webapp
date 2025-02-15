@@ -49,8 +49,8 @@ export const AreaChart: FC<Props> = ({
       }}
     >
       {showGrid ? <CartesianGrid strokeDasharray="3 3" /> : null}
-      <XAxis hide={showXAxis} dataKey="name" />
-      <YAxis hide={showYAxis} />
+      <XAxis hide={!showXAxis} dataKey="name" />
+      <YAxis hide={!showYAxis} />
       {showTooltip ? <Tooltip /> : null}
       <Area type="linear" dataKey="value" stroke={strokeColor} fill={chartColor} />
     </AreaChartOriginal>
