@@ -1,127 +1,90 @@
 'use client';
 
-import { useState, useRef, FC } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   Box,
+  CardMedia,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   IconButton,
-  Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-
-import SaveIcon from '@mui/icons-material/Save';
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddAPhotoOutlinedIcon from '@mui/icons-material/AddAPhotoOutlined';
 import CloseIcon from '@mui/icons-material/Close';
+import { ImageThumbnail } from './ImageThumbnail';
+import { Delete } from '@mui/icons-material';
+import { findIndex, orderBy } from 'lodash-es';
 
-import Image from '../Image';
+const MAX_IMAGES = 3;
 
-const maxImage = 3;
-
-type PhotoType = { url: string; id: string };
-
-interface ImageViewProps {
+interface PhotoType {
+  url: string;
   id: string;
-  onPreview: (id: string) => void;
-  imageUrl: string;
-  onStartCamera?: () => void;
-  index?: number;
 }
 
-const ImageView: FC<ImageViewProps> = ({ onPreview, imageUrl, id, onStartCamera, index }) => {
-  return (
-    <Box
-      sx={{
-        cursor: 'pointer',
-        width: '100px',
-        height: '100px',
-      }}
-    >
-      {imageUrl ? (
-        <Image
-          internalAsset={true}
-          onClick={() => onPreview(id)}
-          width={100}
-          height={100}
-          src={imageUrl}
-          alt={`ImageView-Photo-${id}`}
-          loading="lazy"
-        />
-      ) : (
-        <Box
-          component="div"
-          onClick={onStartCamera}
-          sx={{
-            border: '1px dashed black',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '100px',
-            height: '100px',
-            flexDirection: 'column',
-            gap: '4px',
-          }}
-        >
-          <AddAPhotoOutlinedIcon sx={{ fontSize: '14xp' }} />
-          {index && (
-            <Typography sx={{ fontSize: '12px' }}>
-              {index}/{maxImage}
-            </Typography>
-          )}
-        </Box>
-      )}
-    </Box>
-  );
-};
-
-const generateSampleImage = () => {
-  const result: PhotoType[] = [];
-  for (let i = 0; i < maxImage; i += 1) {
-    const id = (Date.now() + i).toString();
-    result.push({ id, url: '' });
-  }
-
-  return result;
-};
+const generateInitialImages = (): PhotoType[] => [
+  { id: `${Date.now()}`, url: '' },
+];
 
 export const CameraForm = () => {
   const [open, setOpen] = useState(false);
-  const [photos, setPhotos] = useState<PhotoType[]>(generateSampleImage());
+  const [photos, setPhotos] = useState<PhotoType[]>(generateInitialImages());
+  const [selectedImgId, setSelectedImgId] = useState<string | undefined>();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
-  const [selectedImgId, setSelectedImgId] = useState<string>();
   const theme = useTheme();
-
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const getImgId = (value: string) => {
-    setSelectedImgId(value);
+
+  useEffect(() => {
+    return () => stopCamera();
+  }, []);
+
+  const requestCameraPermission = async () => {
+    try {
+      const permission = await navigator.permissions.query({
+        name: 'camera' as PermissionName,
+      });
+      if (permission.state === 'granted') {
+        startCamera();
+      } else if (permission.state === 'prompt') {
+        const mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: 'environment' },
+        });
+        mediaStream.getTracks().forEach((track) => track.stop());
+        startCamera();
+      } else {
+        alert(
+          'Camera access is denied. Please enable it in your browser settings.'
+        );
+      }
+    } catch (error) {
+      console.error('Error requesting camera permission:', error);
+      alert('Unable to access camera. Please check your settings.');
+    }
   };
 
   const startCamera = async () => {
-    const mediaStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: 'environment' },
-    });
-    setStream(mediaStream);
-    if (videoRef.current) {
-      videoRef.current.srcObject = mediaStream;
+    try {
+      const mediaStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment' },
+      });
+      setStream(mediaStream);
+      if (videoRef.current) videoRef.current.srcObject = mediaStream;
+    } catch (error) {
+      console.error('Error starting camera:', error);
     }
   };
 
-  const handleOpen = async () => {
-    try {
-      setOpen(true);
-      startCamera();
-    } catch (error) {
-      setOpen(false);
+  const stopCamera = () => {
+    stream?.getTracks().forEach((track) => track.stop());
+    setStream(null);
+  };
 
-      console.error(error);
-    }
+  const handleOpenCamera = () => {
+    setOpen(true);
+    requestCameraPermission();
   };
 
   const handleClose = () => {
@@ -132,169 +95,194 @@ export const CameraForm = () => {
   const takePhoto = () => {
     if (!videoRef.current || !canvasRef.current) return;
 
-    const video = videoRef.current;
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
+    if (!context) return;
 
-    if (context) {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    canvas.width = videoRef.current.videoWidth;
+    canvas.height = videoRef.current.videoHeight;
+    context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
 
-      const imgUrl = canvas.toDataURL('image/png');
-
-      const copiedPhotos = [...photos];
-      for (const photo of copiedPhotos) {
-        if (!photo.url) {
-          photo.url = imgUrl;
-          break;
-        }
+    const imgUrl = canvas.toDataURL('image/png');
+    let selectedImageId = '';
+    setPhotos((prevPhotos) => {
+      const updatedPhotos = [...prevPhotos];
+      const emptyIndex = updatedPhotos.findIndex((photo) => !photo.url);
+      if (emptyIndex !== -1) {
+        updatedPhotos[emptyIndex] = {
+          ...updatedPhotos[emptyIndex],
+          url: imgUrl,
+        };
+        selectedImageId = updatedPhotos[emptyIndex].id;
       }
-      setPhotos(copiedPhotos);
-    }
-  };
-
-  const stopCamera = () => {
-    if (stream) {
-      stream.getTracks().forEach((track) => track.stop());
-    }
-    setStream(null);
-  };
-
-  const onSave = () => {
-    setOpen(false);
-  };
-
-  const selectedImage = photos.find((it) => it.id === selectedImgId && it.url);
-  const disableCapture = photos.filter((it) => it.url).length >= maxImage;
-
-  const onDeleteImage = () => {
-    const updatedPhotos = photos.map((it) => {
-      if (it.id === selectedImgId) {
-        return { ...it, url: '' };
+      if (updatedPhotos.length < MAX_IMAGES) {
+        updatedPhotos.push({ id: `${Date.now()}`, url: '' });
       }
-
-      return it;
+      return updatedPhotos;
     });
-
-    const nearlyPhoto = updatedPhotos.find((it) => it.url);
-
-    if (nearlyPhoto) {
-      setSelectedImgId(nearlyPhoto.id);
-    } else {
-      setSelectedImgId(undefined);
-      startCamera();
-    }
-    setPhotos(updatedPhotos);
+    setSelectedImgId(selectedImageId);
   };
 
-  const onPreviewImage = (id?: string) => {
-    setSelectedImgId(id);
-    setOpen(true);
+  const deleteImage = (imgId: string) => {
+    setPhotos((prevPhotos) => {
+      // Update the photo URL to an empty string where the id matches
+      const updatedPhotos = prevPhotos.map((photo) =>
+        photo.id === imgId ? { ...photo, url: '' } : photo
+      );
+
+      // Sort photos by `url` (desc) and `id`
+      const sortedPhotos = orderBy(updatedPhotos, ['url', 'id'], ['desc']);
+
+      // Find the first index where `url` is empty
+      const firstValidIndex = findIndex(sortedPhotos, (photo) => !photo.url);
+
+      // Keep photos up to the first valid index
+      return sortedPhotos.slice(0, firstValidIndex + 1);
+    });
+  };
+  const selectedImage = photos.find(
+    (photo) => photo.id === selectedImgId && photo.url
+  );
+
+  const disableCapture =
+    photos.filter((photo) => photo.url).length >= MAX_IMAGES;
+
+  const hadCapture = selectedImage?.url;
+
+  const deleteCaptureImg = () => {
+    deleteImage(selectedImgId ?? '');
+    startCamera();
+  };
+
+  const clickThumbnail = (photo: PhotoType) => {
+    setSelectedImgId(photo.id);
+
+    if (!photo.url) {
+      handleOpenCamera();
+    } else {
+      setOpen(true);
+    }
   };
 
   return (
     <>
-      <Typography fontWeight="bold">Product photo</Typography>
       <Box
-        component="div"
         sx={{
-          width: '100%',
-          height: '140px',
           display: 'flex',
-          alignItems: 'center',
-          py: '0 20px',
-          position: 'relative',
-          borderRadius: '4px',
+          gap: '24px',
         }}
       >
-        <Box component="div" sx={{ width: '100%', height: '100%', display: 'flex', gap: '16px' }}>
-          {photos.map((it, index) => (
-            <ImageView
-              index={index + 1}
-              key={it.id}
-              id={it.id}
-              onPreview={() => onPreviewImage(it.id)}
-              onStartCamera={handleOpen}
-              imageUrl={it.url}
-            />
-          ))}
-        </Box>
+        {photos.map((photo, index) => (
+          <ImageThumbnail
+            key={photo.id}
+            id={photo.id}
+            index={MAX_IMAGES - index}
+            imageUrl={photo.url}
+            onClick={() => clickThumbnail(photo)}
+            onDelete={() => deleteImage(photo.id)}
+          />
+        ))}
       </Box>
-
-      <Dialog open={open} onClose={handleClose} fullWidth fullScreen={fullScreen} maxWidth="sm">
-        <DialogTitle align="center">Take a Photo</DialogTitle>
-        <IconButton sx={{ position: 'absolute', right: '16px', top: '16px' }} onClick={handleClose}>
-          <CloseIcon fontSize="inherit" />
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        fullWidth
+        fullScreen={fullScreen}
+        maxWidth="sm"
+      >
+        <IconButton
+          sx={{
+            position: 'absolute',
+            right: '16px',
+            top: '16px',
+            zIndex: 3,
+            backgroundColor: 'white',
+          }}
+          onClick={handleClose}
+        >
+          <CloseIcon fontSize="medium" />
         </IconButton>
         <DialogContent
           sx={{
             display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            minHeight: '300px',
             flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            backgroundColor: 'black',
+            padding: 0,
+            height: 'calc(100% - 20px)',
+            px: '16px',
           }}
         >
-          {selectedImage && (
-            <Image
-              internalAsset
-              key={selectedImage.id}
-              width={300}
-              height={300}
-              src={selectedImage.url}
-              alt={selectedImage.id}
-              loading="lazy"
+          {hadCapture ? (
+            <CardMedia
+              component="img"
+              image={selectedImage?.url}
+              alt={selectedImage?.id}
+              sx={{
+                width: '100%',
+                height: '90%',
+                objectFit: 'cover',
+              }}
             />
-          )}
-          {!selectedImage && (
+          ) : (
             <video
               ref={videoRef}
               autoPlay
               playsInline
-              style={{ width: '100%', borderRadius: 8, height: '300px' }}
+              style={{
+                width: '100%',
+                height: '90%',
+                objectFit: 'cover',
+              }}
             />
           )}
           <canvas ref={canvasRef} style={{ display: 'none' }} />
         </DialogContent>
-
-        <DialogActions>
-          <Box
-            component="div"
+        <DialogActions
+          sx={{
+            paddingBottom: '16px',
+            backgroundColor: 'black',
+            padding: 0,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <IconButton
+            disabled={disableCapture}
+            onClick={hadCapture ? deleteCaptureImg : takePhoto}
             sx={{
+              backgroundColor: 'black',
+              padding: '20px',
+              borderRadius: '50px',
               display: 'flex',
-              width: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
+              height: '100px',
             }}
           >
-            {selectedImage ? (
-              <IconButton sx={{ fontSize: '26px', color: 'red' }} onClick={onDeleteImage}>
-                <DeleteIcon fontSize="inherit" />
-              </IconButton>
+            {hadCapture ? (
+              <Delete fontSize="large" sx={{ color: '#fff' }} />
             ) : (
-              <IconButton disabled={disableCapture} sx={{ fontSize: '26px' }} onClick={takePhoto}>
-                <PhotoCameraIcon fontSize="inherit" />
-              </IconButton>
+              <Box
+                component="div"
+                sx={{
+                  borderRadius: '50%',
+                  border: '2px solid white',
+                  padding: '4px',
+                }}
+              >
+                <Box
+                  component="div"
+                  sx={{
+                    width: '50px',
+                    height: '50px',
+                    borderRadius: '50%',
+                    background: 'white',
+                  }}
+                />
+              </Box>
             )}
-            <IconButton sx={{ fontSize: '26px' }} onClick={onSave}>
-              <SaveIcon fontSize="inherit" />
-            </IconButton>
-          </Box>
+          </IconButton>
         </DialogActions>
-        <DialogContent
-          sx={{ height: '140px', px: '20px', width: '100%', display: 'flex', gap: '16px' }}
-        >
-          {photos.map((it) => (
-            <ImageView
-              id={it.id}
-              onPreview={() => getImgId(it.id)}
-              onStartCamera={startCamera}
-              key={it.id}
-              imageUrl={it.url}
-            />
-          ))}
-        </DialogContent>
       </Dialog>
     </>
   );
