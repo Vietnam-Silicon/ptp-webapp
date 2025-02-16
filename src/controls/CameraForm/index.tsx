@@ -31,21 +31,54 @@ export const CameraForm = () => {
   const [open, setOpen] = useState(false);
   const [photos, setPhotos] = useState<PhotoType[]>(generateInitialImages());
   const [selectedImgId, setSelectedImgId] = useState<string | undefined>();
+  const [stream, setStream] = useState<MediaStream | null>(null);
+
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [stream, setStream] = useState<MediaStream | null>(null);
+
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  useEffect(() => {
-    return () => stopCamera();
-  }, []);
+  useEffect(() => stopCamera, []); // Cleanup on unmount
 
-  const requestCameraPermission = async () => {
+  // Handles opening and requesting camera permissions
+  const handleOpenCamera = async () => {
+    setOpen(true);
+    await handleCameraPermission();
+  };
+
+  // Closes dialog and stops camera
+  const handleClose = () => {
+    stopCamera();
+    setOpen(false);
+  };
+
+  // Starts the camera
+  const startCamera = async () => {
+    try {
+      const mediaStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment' },
+      });
+      setStream(mediaStream);
+      if (videoRef.current) videoRef.current.srcObject = mediaStream;
+    } catch (error) {
+      console.error('Error starting camera:', error);
+    }
+  };
+
+  // Stops the camera
+  const stopCamera = () => {
+    stream?.getTracks().forEach((track) => track.stop());
+    setStream(null);
+  };
+
+  // Handles camera permissions
+  const handleCameraPermission = async () => {
     try {
       const permission = await navigator.permissions.query({
         name: 'camera' as PermissionName,
       });
+
       if (permission.state === 'granted') {
         startCamera();
       } else if (permission.state === 'prompt') {
@@ -65,33 +98,7 @@ export const CameraForm = () => {
     }
   };
 
-  const startCamera = async () => {
-    try {
-      const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment' },
-      });
-      setStream(mediaStream);
-      if (videoRef.current) videoRef.current.srcObject = mediaStream;
-    } catch (error) {
-      console.error('Error starting camera:', error);
-    }
-  };
-
-  const stopCamera = () => {
-    stream?.getTracks().forEach((track) => track.stop());
-    setStream(null);
-  };
-
-  const handleOpenCamera = () => {
-    setOpen(true);
-    requestCameraPermission();
-  };
-
-  const handleClose = () => {
-    stopCamera();
-    setOpen(false);
-  };
-
+  // Captures a photo from the video stream
   const takePhoto = () => {
     if (!videoRef.current || !canvasRef.current) return;
 
@@ -104,59 +111,47 @@ export const CameraForm = () => {
     context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
 
     const imgUrl = canvas.toDataURL('image/png');
-    let selectedImageId = '';
     setPhotos((prevPhotos) => {
       const updatedPhotos = [...prevPhotos];
       const emptyIndex = updatedPhotos.findIndex((photo) => !photo.url);
+
       if (emptyIndex !== -1) {
         updatedPhotos[emptyIndex] = {
           ...updatedPhotos[emptyIndex],
           url: imgUrl,
         };
-        selectedImageId = updatedPhotos[emptyIndex].id;
+      } else if (updatedPhotos.length < MAX_IMAGES) {
+        updatedPhotos.push({ id: `${Date.now()}`, url: imgUrl });
       }
-      if (updatedPhotos.length < MAX_IMAGES) {
-        updatedPhotos.push({ id: `${Date.now()}`, url: '' });
-      }
+
       return updatedPhotos;
     });
-    setSelectedImgId(selectedImageId);
+
+    setSelectedImgId(photos.find((photo) => !photo.url)?.id);
   };
 
+  // Deletes an image and maintains order
   const deleteImage = (imgId: string) => {
     setPhotos((prevPhotos) => {
-      // Update the photo URL to an empty string where the id matches
       const updatedPhotos = prevPhotos.map((photo) =>
         photo.id === imgId ? { ...photo, url: '' } : photo
       );
-
-      // Sort photos by `url` (desc) and `id`
       const sortedPhotos = orderBy(updatedPhotos, ['url', 'id'], ['desc']);
-
-      // Find the first index where `url` is empty
       const firstValidIndex = findIndex(sortedPhotos, (photo) => !photo.url);
-
-      // Keep photos up to the first valid index
       return sortedPhotos.slice(0, firstValidIndex + 1);
     });
   };
+
   const selectedImage = photos.find(
     (photo) => photo.id === selectedImgId && photo.url
   );
-
   const disableCapture =
     photos.filter((photo) => photo.url).length >= MAX_IMAGES;
+  const hadCapture = Boolean(selectedImage?.url);
 
-  const hadCapture = selectedImage?.url;
-
-  const deleteCaptureImg = () => {
-    deleteImage(selectedImgId ?? '');
-    startCamera();
-  };
-
+  // Handles thumbnail click
   const clickThumbnail = (photo: PhotoType) => {
     setSelectedImgId(photo.id);
-
     if (!photo.url) {
       handleOpenCamera();
     } else {
@@ -166,12 +161,7 @@ export const CameraForm = () => {
 
   return (
     <>
-      <Box
-        sx={{
-          display: 'flex',
-          gap: '24px',
-        }}
-      >
+      <Box sx={{ display: 'flex', gap: '24px' }}>
         {photos.map((photo, index) => (
           <ImageThumbnail
             key={photo.id}
@@ -219,22 +209,14 @@ export const CameraForm = () => {
               component="img"
               image={selectedImage?.url}
               alt={selectedImage?.id}
-              sx={{
-                width: '100%',
-                height: '90%',
-                objectFit: 'cover',
-              }}
+              sx={{ width: '100%', height: '90%', objectFit: 'cover' }}
             />
           ) : (
             <video
               ref={videoRef}
               autoPlay
               playsInline
-              style={{
-                width: '100%',
-                height: '90%',
-                objectFit: 'cover',
-              }}
+              style={{ width: '100%', height: '90%', objectFit: 'cover' }}
             />
           )}
           <canvas ref={canvasRef} style={{ display: 'none' }} />
@@ -250,7 +232,9 @@ export const CameraForm = () => {
         >
           <IconButton
             disabled={disableCapture}
-            onClick={hadCapture ? deleteCaptureImg : takePhoto}
+            onClick={
+              hadCapture ? () => deleteImage(selectedImgId ?? '') : takePhoto
+            }
             sx={{
               backgroundColor: 'black',
               padding: '20px',
@@ -263,7 +247,6 @@ export const CameraForm = () => {
               <Delete fontSize="large" sx={{ color: '#fff' }} />
             ) : (
               <Box
-                component="div"
                 sx={{
                   borderRadius: '50%',
                   border: '2px solid white',
@@ -271,7 +254,6 @@ export const CameraForm = () => {
                 }}
               >
                 <Box
-                  component="div"
                   sx={{
                     width: '50px',
                     height: '50px',
