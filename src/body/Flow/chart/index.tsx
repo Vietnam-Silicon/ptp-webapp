@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, FC, useContext } from 'react';
+import React, { useState, useEffect, FC, useContext } from 'react';
 import {
   ReactFlow,
   ReactFlowProvider,
@@ -8,6 +8,7 @@ import {
   useEdgesState,
   Edge,
   Node,
+  MiniMap,
 } from '@xyflow/react';
 import { orderBy } from 'lodash-es';
 import '@xyflow/react/dist/style.css';
@@ -15,6 +16,7 @@ import '@xyflow/react/dist/style.css';
 import { FlowContext } from '../FlowContext';
 
 import ResizableNode from './node';
+import Info from './info';
 import { transform } from './utils';
 import styles from './styles.module.css';
 
@@ -29,6 +31,7 @@ const LayoutFlow: FC = () => {
 
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+  const [selectedNode, setNode] = useState<any>(null);
 
   useEffect(() => {
     if (nodesData?.length) {
@@ -45,7 +48,11 @@ const LayoutFlow: FC = () => {
       ...(config || {}),
       [node.id]: node.position,
     });
-  }
+  };
+
+  const onNodeClick = (_event: any, node: any) => {
+    setNode(node);
+  };
 
   return (
     <div className={styles.container}>
@@ -54,8 +61,9 @@ const LayoutFlow: FC = () => {
       </div>
       <div className={styles.flow}>
         <ReactFlow
-          defaultViewport={{ x: 10, y: 10, zoom: 0.2 }}
+          defaultViewport={{ x: 10, y: 10, zoom: 1 }}
           selectionOnDrag={false}
+          onNodeClick={onNodeClick}
           proOptions={{ hideAttribution: true }}
           nodes={nodes}
           edges={edges}
@@ -63,8 +71,16 @@ const LayoutFlow: FC = () => {
           onEdgesChange={onEdgesChange}
           nodeTypes={{ resizableNode: ResizableNode }}
           onNodeDragStop={getConfig}
-        />
+        >
+          <MiniMap style={{ background: '#fff' }} />
+        </ReactFlow>
       </div>
+      {selectedNode && (
+        <Info
+          node={selectedNode}
+          onClose={() => setNode(null)}
+        />
+      )}
     </div>
   );
 };

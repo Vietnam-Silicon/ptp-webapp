@@ -5,7 +5,9 @@ import {
   safeJSONParse
 } from 'utils/jsonTransform';
 
-import { NodeResponse } from './index.d';
+import { NodeResponse } from 'types/FlowNode';
+
+const edgeColor: string = '#3399ff';
 
 export const transform = (nodes: NodeResponse[] = [], currentId: string, chartConfig: any): { initialNodes: Node[], initialEdges: Edge[] } => {
 
@@ -36,7 +38,18 @@ export const transform = (nodes: NodeResponse[] = [], currentId: string, chartCo
       id: `${i.id}`,
       source: `${i.relatedWorkflowNodesId}`,
       target: `${i.WorkflowNodesId}`,
-      markerEnd: { type: MarkerType.Arrow, width: 24, height: 24 },
+      type: "smoothstep",
+      animated: true,
+      style: {
+        stroke: edgeColor,
+        strokeWidth: 2,
+      },
+      markerEnd: {
+        type: MarkerType.ArrowClosed,
+        width: 20,
+        height: 20,
+        color: edgeColor,
+      },
     }));
     result.initialEdges = result.initialEdges.concat(edges);
 
